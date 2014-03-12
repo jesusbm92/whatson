@@ -96,7 +96,8 @@ public class UserLogin extends Activity {
 
 		Context mContext = null;
 		String userToSearch = "";
-
+		String ip = "10.0.2.2";
+		String ip2= "192.168.10.172";
 		// Result data
 		String userres;
 		String passres;
@@ -129,7 +130,7 @@ public class UserLogin extends Activity {
 
 				HttpClient httpclient = new DefaultHttpClient(httpParameters);
 				HttpPost httppost = new HttpPost(
-						"http://10.0.2.2/clientservertest/login.php");
+						"http://"+ip2+"/clientservertest/login.php");
 				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 				HttpResponse response = httpclient.execute(httppost);
 				HttpEntity entity = response.getEntity();

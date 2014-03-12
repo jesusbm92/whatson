@@ -116,6 +116,8 @@ public class Register extends Activity {
 		String userToRegister = "";
 		String passwordToRegister = "";
 		String ip = "10.0.2.2";
+		String ip2= "192.168.10.172";
+
 
 		Exception exception = null;
 
@@ -148,7 +150,7 @@ public class Register extends Activity {
 
 				HttpClient httpclient = new DefaultHttpClient(httpParameters);
 				HttpPost httppost = new HttpPost(
-						"http://"+ip+"/clientservertest/registerUser.php");
+						"http://"+ip2+"/clientservertest/registerUser.php");
 				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 				HttpResponse response = httpclient.execute(httppost);
 				HttpEntity entity = response.getEntity();
@@ -189,6 +191,7 @@ public class Register extends Activity {
 		String userToRegister = "";
 		String passwordToRegister = "";
 		String ip = "10.0.2.2";
+		String ip2= "192.168.10.172";
 
 
 		Exception exception = null;
@@ -224,7 +227,7 @@ public class Register extends Activity {
 
 				HttpClient httpclient = new DefaultHttpClient(httpParameters);
 				HttpPost httppost = new HttpPost(
-						"http://"+ip+"/clientservertest/registerAnnouncer.php");
+						"http://"+ip2+"/clientservertest/registerAnnouncer.php");
 				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 				HttpResponse response = httpclient.execute(httppost);
 				HttpEntity entity = response.getEntity();
