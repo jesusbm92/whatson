@@ -99,7 +99,7 @@ public class UserLogin extends Activity {
 		Context mContext = null;
 		String userToSearch = "";
 		String ip = "10.0.2.2";
-		String ip2 = "192.168.10.124";
+		String ip2 = "192.168.10.101";
 		// Result data
 		String userres;
 		String passres;
