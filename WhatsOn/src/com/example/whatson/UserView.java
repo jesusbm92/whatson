@@ -1,6 +1,7 @@
 package com.example.whatson;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -14,6 +15,7 @@ import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.content.Context;
@@ -51,9 +53,9 @@ public class UserView extends FragmentActivity implements OnMapClickListener {
 		mapa.setMyLocationEnabled(true);
 		mapa.getUiSettings().setZoomControlsEnabled(false);
 		mapa.getUiSettings().setCompassEnabled(true);
-//		Location myLoc = mapa.getMyLocation();
-//		mapa.moveCamera(CameraUpdateFactory.newLatLngZoom(
-//				new LatLng(myLoc.getLatitude(), myLoc.getLongitude()), 18));
+		// Location myLoc = mapa.getMyLocation();
+		// mapa.moveCamera(CameraUpdateFactory.newLatLngZoom(
+		// new LatLng(myLoc.getLatitude(), myLoc.getLongitude()), 18));
 		DoPOST dopost = new DoPOST(UserView.this, 2);
 		dopost.execute();
 	}
@@ -94,12 +96,13 @@ public class UserView extends FragmentActivity implements OnMapClickListener {
 		int idOferta;
 		String ip = "10.0.2.2";
 		String ip2 = "192.168.1.19";
-		String nombre;
-		String descripcion;
-		String activa;
-		String categoria;
-		String latitud;
-		String longitud;
+		Integer longitudArray;
+		List<String> nombre = new ArrayList<String>();
+		List<String> descripcion = new ArrayList<String>();
+		List<String> activa = new ArrayList<String>();
+		List<String> categoria = new ArrayList<String>();
+		List<String> latitud = new ArrayList<String>();
+		List<String> longitud = new ArrayList<String>();
 		// Result data
 
 		Exception exception = null;
@@ -116,8 +119,7 @@ public class UserView extends FragmentActivity implements OnMapClickListener {
 
 				// Setup the parameters
 				ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-				nameValuePairs.add(new BasicNameValuePair("idOferta", String
-						.valueOf(idOferta)));
+				nameValuePairs.add(new BasicNameValuePair("user", "user"));
 				// Add more parameters as necessary
 
 				// Create the HTTP request
@@ -130,7 +132,7 @@ public class UserView extends FragmentActivity implements OnMapClickListener {
 
 				HttpClient httpclient = new DefaultHttpClient(httpParameters);
 				HttpPost httppost = new HttpPost("http://" + ip2
-						+ "/clientservertest/mostrarOferta.php");
+						+ "/clientservertest/mostrarTodasOfertas.php");
 				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 				HttpResponse response = httpclient.execute(httppost);
 				HttpEntity entity = response.getEntity();
@@ -138,21 +140,33 @@ public class UserView extends FragmentActivity implements OnMapClickListener {
 				String result = EntityUtils.toString(entity);
 
 				// Create a JSON object from the request response
-				JSONObject jsonObject = new JSONObject(result);
+				JSONArray jsonArray = new JSONArray(result);
+
+				longitudArray = jsonArray.length();
 
 				// Retrieve the data from the JSON object
-				nombre = (String) jsonObject.get("Nombre");
-				descripcion = (String) jsonObject.get("Descripcion");
-				String i = (String) jsonObject.get("Activa");
-				String i1 = i;
-				if (i1.equals("1")) {
-					activa = "true";
-				} else {
-					activa = "false";
+				for (int i = 0; i < jsonArray.length(); i++) {
+					JSONObject jsonObject = jsonArray.getJSONObject(i);
+					String nombre1 = (String) jsonObject.get("Nombre");
+					String descripcion1 = (String) jsonObject
+							.get("Descripcion");
+					String i1 = (String) jsonObject.get("Activa");
+					String i2 = i1;
+					if (i2.equals("1")) {
+						activa.add("true");
+					} else {
+						activa.add("false");
+					}
+					String categoria1 = (String) jsonObject.get("Categoria");
+					String latitud1 = (String) jsonObject.get("Latitud");
+					String longitud1 = (String) jsonObject.get("Longitud");
+
+					nombre.add(nombre1);
+					descripcion.add(descripcion1);
+					categoria.add(categoria1);
+					latitud.add(latitud1);
+					longitud.add(longitud1);
 				}
-				categoria = (String) jsonObject.get("Categoria");
-				latitud = (String) jsonObject.get("Latitud");
-				longitud = (String) jsonObject.get("Longitud");
 
 			} catch (Exception e) {
 				Log.e("ClientServerDemo", "Error:", e);
@@ -172,21 +186,25 @@ public class UserView extends FragmentActivity implements OnMapClickListener {
 
 			super.onPostExecute(valid);
 
-			Double latitudfin = Double.parseDouble(latitud);
-			Double longitudfin = Double.parseDouble(longitud);
-			String nombrefin = nombre;
-			Boolean visiblefin = new Boolean(activa);
-			String descripcionfin = descripcion;
+			for (int i = 0; i < latitud.size(); i++) {
 
-			mapa.addMarker(new MarkerOptions()
-					.position(new LatLng(latitudfin, longitudfin))
-					.title(nombrefin)
-					.visible(visiblefin)
-					.snippet(descripcionfin)
-					.icon(BitmapDescriptorFactory
-							.fromResource(R.drawable.ic_launcher))
-					.anchor(0.5f, 0.5f));
-			mapa.setOnMapClickListener(UserView.this);
+				Double latitudfin = Double.parseDouble(latitud.get(i));
+				Double longitudfin = Double.parseDouble(longitud.get(i));
+				String nombrefin = nombre.get(i);
+				String estaActiva = activa.get(i);
+				Boolean visiblefin = new Boolean(estaActiva);
+				String descripcionfin = descripcion.get(i);
+
+				mapa.addMarker(new MarkerOptions()
+						.position(new LatLng(latitudfin, longitudfin))
+						.title(nombrefin)
+						.visible(visiblefin)
+						.snippet(descripcionfin)
+						.icon(BitmapDescriptorFactory
+								.fromResource(R.drawable.ic_launcher))
+						.anchor(0.5f, 0.5f));
+				mapa.setOnMapClickListener(UserView.this);
+			}
 
 		}
 	}
