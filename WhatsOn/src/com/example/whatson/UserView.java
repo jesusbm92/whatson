@@ -1,6 +1,5 @@
 package com.example.whatson;
 
-import java.security.Provider;
 import java.util.ArrayList;
 
 import org.apache.http.HttpEntity;
@@ -18,23 +17,24 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
 import android.content.Context;
-import android.location.Criteria;
+import android.content.Intent;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class UserView extends FragmentActivity implements OnMapClickListener {
@@ -51,8 +51,37 @@ public class UserView extends FragmentActivity implements OnMapClickListener {
 		mapa.setMyLocationEnabled(true);
 		mapa.getUiSettings().setZoomControlsEnabled(false);
 		mapa.getUiSettings().setCompassEnabled(true);
+//		Location myLoc = mapa.getMyLocation();
+//		mapa.moveCamera(CameraUpdateFactory.newLatLngZoom(
+//				new LatLng(myLoc.getLatitude(), myLoc.getLongitude()), 18));
 		DoPOST dopost = new DoPOST(UserView.this, 2);
 		dopost.execute();
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		super.onCreateOptionsMenu(menu);
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.menuuserview, menu);
+		return true;
+		/** true -> el menú ya está visible */
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.favourites:
+			lanzarFavoritas(null);
+			break;
+		}
+		return true;
+		/** true -> consumimos el item, no se propaga */
+	}
+
+	private void lanzarFavoritas(View view) {
+		Intent i = new Intent(this, UserView.class);
+		i.putExtra("user", getIntent().getStringExtra("user"));
+		startActivity(i);
 	}
 
 	@Override
@@ -64,7 +93,7 @@ public class UserView extends FragmentActivity implements OnMapClickListener {
 		Context mContext = null;
 		int idOferta;
 		String ip = "10.0.2.2";
-		String ip2 = "192.168.10.101";
+		String ip2 = "192.168.1.19";
 		String nombre;
 		String descripcion;
 		String activa;

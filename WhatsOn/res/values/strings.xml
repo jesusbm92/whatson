@@ -26,5 +26,6 @@
         <item>Usuario</item>
         <item>Anunciante</item>
     </string-array>
+    <string name="favourites">Favoritas</string>
 
 </resources>
