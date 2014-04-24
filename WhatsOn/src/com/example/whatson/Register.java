@@ -114,8 +114,7 @@ public class Register extends Activity {
 		String userToRegister = "";
 		String passwordToRegister = "";
 		String ip = "10.0.2.2";
-		String ip2= "192.168.10.172";
-
+		String ip2 = "192.168.137.88";
 
 		Exception exception = null;
 
@@ -147,8 +146,8 @@ public class Register extends Activity {
 				HttpConnectionParams.setSoTimeout(httpParameters, 15000);
 
 				HttpClient httpclient = new DefaultHttpClient(httpParameters);
-				HttpPost httppost = new HttpPost(
-						"http://"+ip2+"/clientservertest/registerUser.php");
+				HttpPost httppost = new HttpPost("http://" + ip2
+						+ "/clientservertest/registerUser.php");
 				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 				HttpResponse response = httpclient.execute(httppost);
 				HttpEntity entity = response.getEntity();
@@ -172,12 +171,21 @@ public class Register extends Activity {
 
 			super.onPostExecute(valid);
 			baccept.setEnabled(true);
-			AlertDialog msj = new AlertDialog.Builder(Register.this).create();
-			msj.setTitle("Exito");
-			msj.setMessage("Usuario "
-					+ user.getText().toString()
-					+ " creado correctamente, por favor acceda a la aplicación para continuar");
-			msj.show();
+			if (exception != null) {
+				AlertDialog msj = new AlertDialog.Builder(Register.this)
+						.create();
+				msj.setTitle("Error");
+				msj.setMessage("No pudo realizarse el registro debido a un problema del servidor, vuelvalo a intentar de nuevo mas tarde");
+				msj.show();
+			} else {
+				AlertDialog msj = new AlertDialog.Builder(Register.this)
+						.create();
+				msj.setTitle("Exito");
+				msj.setMessage("Usuario "
+						+ user.getText().toString()
+						+ " creado correctamente, por favor acceda a la aplicación para continuar");
+				msj.show();
+			}
 
 		}
 
@@ -189,8 +197,7 @@ public class Register extends Activity {
 		String userToRegister = "";
 		String passwordToRegister = "";
 		String ip = "10.0.2.2";
-		String ip2= "192.168.10.136";
-
+		String ip2 = "192.168.10.136";
 
 		Exception exception = null;
 
@@ -224,8 +231,8 @@ public class Register extends Activity {
 				HttpConnectionParams.setSoTimeout(httpParameters, 15000);
 
 				HttpClient httpclient = new DefaultHttpClient(httpParameters);
-				HttpPost httppost = new HttpPost(
-						"http://"+ip2+"/clientservertest/registerAnnouncer.php");
+				HttpPost httppost = new HttpPost("http://" + ip2
+						+ "/clientservertest/registerAnnouncer.php");
 				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 				HttpResponse response = httpclient.execute(httppost);
 				HttpEntity entity = response.getEntity();

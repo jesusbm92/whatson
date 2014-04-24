@@ -33,10 +33,13 @@ import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
+import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class UserView extends FragmentActivity implements OnMapClickListener {
@@ -49,10 +52,30 @@ public class UserView extends FragmentActivity implements OnMapClickListener {
 		setContentView(R.layout.userview);
 		mapa = ((SupportMapFragment) getSupportFragmentManager()
 				.findFragmentById(R.id.map)).getMap();
-		mapa.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+		mapa.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 		mapa.setMyLocationEnabled(true);
 		mapa.getUiSettings().setZoomControlsEnabled(false);
 		mapa.getUiSettings().setCompassEnabled(true);
+		mapa.addMarker(new MarkerOptions()
+				.position(new LatLng(50, 50))
+				.title("Marker")
+				.visible(false)
+				.snippet("Marker para inicializar el markerclicklistener")
+				.icon(BitmapDescriptorFactory
+						.fromResource(R.drawable.ic_launcher))
+				.anchor(0.5f, 0.5f));
+		mapa.setOnInfoWindowClickListener(new OnInfoWindowClickListener() {
+
+			@Override
+			public void onInfoWindowClick(Marker marker) {
+				// Aqui poner lo que se quiera para cuando se pulse en la info
+				// del marker
+				Intent i = new Intent(UserView.this, SaleDetails.class);
+				i.putExtra("user", getIntent().getStringExtra("user"));
+				i.putExtra("oferta", marker.getTitle());
+				startActivity(i);
+			}
+		});
 		// Location myLoc = mapa.getMyLocation();
 		// mapa.moveCamera(CameraUpdateFactory.newLatLngZoom(
 		// new LatLng(myLoc.getLatitude(), myLoc.getLongitude()), 18));
@@ -95,14 +118,16 @@ public class UserView extends FragmentActivity implements OnMapClickListener {
 		Context mContext = null;
 		int idOferta;
 		String ip = "10.0.2.2";
-		String ip2 = "192.168.1.19";
+		String ip2 = "192.168.137.88";
 		Integer longitudArray;
+		List<String> id = new ArrayList<String>();
 		List<String> nombre = new ArrayList<String>();
 		List<String> descripcion = new ArrayList<String>();
 		List<String> activa = new ArrayList<String>();
 		List<String> categoria = new ArrayList<String>();
 		List<String> latitud = new ArrayList<String>();
 		List<String> longitud = new ArrayList<String>();
+		List<String> direccion = new ArrayList<String>();
 		// Result data
 
 		Exception exception = null;
@@ -147,6 +172,7 @@ public class UserView extends FragmentActivity implements OnMapClickListener {
 				// Retrieve the data from the JSON object
 				for (int i = 0; i < jsonArray.length(); i++) {
 					JSONObject jsonObject = jsonArray.getJSONObject(i);
+					String id1 = (String) jsonObject.get("id");
 					String nombre1 = (String) jsonObject.get("Nombre");
 					String descripcion1 = (String) jsonObject
 							.get("Descripcion");
@@ -160,12 +186,15 @@ public class UserView extends FragmentActivity implements OnMapClickListener {
 					String categoria1 = (String) jsonObject.get("Categoria");
 					String latitud1 = (String) jsonObject.get("Latitud");
 					String longitud1 = (String) jsonObject.get("Longitud");
+					String direccion1 = (String) jsonObject.get("Direccion");
 
+					id.add(id1);
 					nombre.add(nombre1);
 					descripcion.add(descripcion1);
 					categoria.add(categoria1);
 					latitud.add(latitud1);
 					longitud.add(longitud1);
+					direccion.add(direccion1);
 				}
 
 			} catch (Exception e) {
@@ -194,12 +223,14 @@ public class UserView extends FragmentActivity implements OnMapClickListener {
 				String estaActiva = activa.get(i);
 				Boolean visiblefin = new Boolean(estaActiva);
 				String descripcionfin = descripcion.get(i);
-
+				String direccionfin = direccion.get(i);
+				
 				mapa.addMarker(new MarkerOptions()
 						.position(new LatLng(latitudfin, longitudfin))
 						.title(nombrefin)
 						.visible(visiblefin)
-						.snippet(descripcionfin)
+						.draggable(true)
+						.snippet(descripcionfin + "\n" + direccionfin)
 						.icon(BitmapDescriptorFactory
 								.fromResource(R.drawable.ic_launcher))
 						.anchor(0.5f, 0.5f));
