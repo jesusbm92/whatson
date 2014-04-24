@@ -26,6 +26,7 @@
     <string name="direccion">Direccion:</string>
     <string name="activa">Activa en este momento:</string>
     <string name="marcarfavorita">Marcar Oferta Favorita</string>
+    <string name="desmarcarfavorita">Desmarcar Oferta Favorita</string>
 
     <string-array name="selectUser">
         <item>Usuario</item>

@@ -36,6 +36,7 @@ import android.widget.Toast;
 public class SaleDetails extends Activity {
 
 	Button ofertaFavorita;
+	Button ofertaNoFavorita;
 	TextView nombreOferta;
 	TextView direccionOferta;
 	TextView descripcionOferta;
@@ -47,6 +48,30 @@ public class SaleDetails extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.saledetails);
 		ofertaFavorita = (Button) findViewById(R.id.FavoritaOferta);
+		ofertaFavorita.setVisibility(View.GONE);
+		ofertaFavorita.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				MarcarOfertaFavorita marcarOferta = new MarcarOfertaFavorita(
+						SaleDetails.this, getIntent().getStringExtra("user"),
+						getIntent().getStringExtra("oferta"));
+				marcarOferta.execute();
+
+			}
+		});
+		ofertaNoFavorita = (Button) findViewById(R.id.NoFavoritaOferta);
+		ofertaNoFavorita.setVisibility(View.GONE);
+		ofertaNoFavorita.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				DesmarcarOfertaFavorita desmarcarOferta = new DesmarcarOfertaFavorita(
+						SaleDetails.this, getIntent().getStringExtra("user"),
+						getIntent().getStringExtra("oferta"));
+				desmarcarOferta.execute();
+			}
+		});
 		nombreOferta = (TextView) findViewById(R.id.NombreOferta);
 		direccionOferta = (TextView) findViewById(R.id.DireccionOferta);
 		descripcionOferta = (TextView) findViewById(R.id.DescripcionOferta);
@@ -154,91 +179,153 @@ public class SaleDetails extends Activity {
 				activaOferta.setText("No");
 			}
 			if (esFavorita.equals(true)) {
-				ofertaFavorita.setVisibility(View.INVISIBLE);
+				ofertaNoFavorita.setVisibility(View.VISIBLE);
+			} else {
+				ofertaFavorita.setVisibility(View.VISIBLE);
 			}
 
 		}
 
-		// private class DoPOSTAnnouncer extends AsyncTask<String, Void,
-		// Boolean> {
-		//
-		// Context mContext = null;
-		// String userToRegister = "";
-		// String passwordToRegister = "";
-		// String ip = "10.0.2.2";
-		// String ip2 = "192.168.10.136";
-		//
-		// Exception exception = null;
-		//
-		// DoPOSTAnnouncer(Context context, String userToRegister,
-		// String passwordToRegister) {
-		// mContext = context;
-		// this.userToRegister = userToRegister;
-		// this.passwordToRegister = passwordToRegister;
-		// }
-		//
-		// @Override
-		// protected Boolean doInBackground(String... arg0) {
-		//
-		// try {
-		//
-		// // Setup the parameters
-		// ArrayList<NameValuePair> nameValuePairs = new
-		// ArrayList<NameValuePair>(
-		// 2);
-		// nameValuePairs.add(new BasicNameValuePair("UserToRegister",
-		// userToRegister));
-		// nameValuePairs.add(new BasicNameValuePair(
-		// "PasswordToRegister", passwordToRegister));
-		// // Add more parameters as necessary
-		//
-		// // Create the HTTP request
-		// HttpParams httpParameters = new BasicHttpParams();
-		//
-		// // Setup timeouts
-		// HttpConnectionParams.setConnectionTimeout(httpParameters,
-		// 15000);
-		// HttpConnectionParams.setSoTimeout(httpParameters, 15000);
-		//
-		// HttpClient httpclient = new DefaultHttpClient(
-		// httpParameters);
-		// HttpPost httppost = new HttpPost("http://" + ip2
-		// + "/clientservertest/registerAnnouncer.php");
-		// httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-		// HttpResponse response = httpclient.execute(httppost);
-		// HttpEntity entity = response.getEntity();
-		//
-		// } catch (Exception e) {
-		// Log.e("ClientServerDemo", "Error:", e);
-		// exception = e;
-		// }
-		//
-		// return true;
-		// }
-		//
-		// @Override
-		// protected void onPostExecute(Boolean valid) {
-		// // Update the UI
-		//
-		// if (exception != null) {
-		// Toast.makeText(mContext, exception.getMessage(),
-		// Toast.LENGTH_LONG).show();
-		// }
-		//
-		// super.onPostExecute(valid);
-		// baccept.setEnabled(true);
-		// AlertDialog msj = new AlertDialog.Builder(Register.this)
-		// .create();
-		// msj.setTitle("Exito");
-		// msj.setMessage("Anunciante "
-		// + user.getText().toString()
-		// +
-		// " creado correctamente, por favor acceda a la aplicación para continuar");
-		// msj.show();
-		//
-		// }
-		//
-		// }
+	}
+
+	private class MarcarOfertaFavorita extends AsyncTask<String, Void, Boolean> {
+
+		Context mContext = null;
+		String user = "";
+		String nombreOfertaSelec = "";
+		String ip = "10.0.2.2";
+		String ip2 = "192.168.137.88";
+
+		Exception exception = null;
+
+		MarcarOfertaFavorita(Context context, String user,
+				String nombreOfertaSelec) {
+			mContext = context;
+			this.user = user;
+			this.nombreOfertaSelec = nombreOfertaSelec;
+		}
+
+		@Override
+		protected Boolean doInBackground(String... arg0) {
+
+			try {
+
+				// Setup the parameters
+				ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(
+						2);
+				nameValuePairs.add(new BasicNameValuePair("user", user));
+				nameValuePairs.add(new BasicNameValuePair("nombreOfertaSelec",
+						nombreOfertaSelec));
+				// Add more parameters as necessary
+
+				// Create the HTTP request
+				HttpParams httpParameters = new BasicHttpParams();
+
+				// Setup timeouts
+				HttpConnectionParams
+						.setConnectionTimeout(httpParameters, 15000);
+				HttpConnectionParams.setSoTimeout(httpParameters, 15000);
+
+				HttpClient httpclient = new DefaultHttpClient(httpParameters);
+				HttpPost httppost = new HttpPost("http://" + ip2
+						+ "/clientservertest/marcarFavorita.php");
+				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+				HttpResponse response = httpclient.execute(httppost);
+				HttpEntity entity = response.getEntity();
+
+			} catch (Exception e) {
+				Log.e("ClientServerDemo", "Error:", e);
+				exception = e;
+			}
+
+			return true;
+		}
+
+		@Override
+		protected void onPostExecute(Boolean valid) {
+			// Update the UI
+
+			if (exception != null) {
+				Toast.makeText(mContext, exception.getMessage(),
+						Toast.LENGTH_LONG).show();
+			}
+
+			super.onPostExecute(valid);
+			SaleDetails.this.finish();
+			SaleDetails.this.startActivity(SaleDetails.this.getIntent());
+
+		}
+
+	}
+
+	private class DesmarcarOfertaFavorita extends
+			AsyncTask<String, Void, Boolean> {
+
+		Context mContext = null;
+		String user = "";
+		String nombreOfertaSelec = "";
+		String ip = "10.0.2.2";
+		String ip2 = "192.168.137.88";
+
+		Exception exception = null;
+
+		DesmarcarOfertaFavorita(Context context, String user,
+				String nombreOfertaSelec) {
+			mContext = context;
+			this.user = user;
+			this.nombreOfertaSelec = nombreOfertaSelec;
+		}
+
+		@Override
+		protected Boolean doInBackground(String... arg0) {
+
+			try {
+
+				// Setup the parameters
+				ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(
+						2);
+				nameValuePairs.add(new BasicNameValuePair("user", user));
+				nameValuePairs.add(new BasicNameValuePair("nombreOfertaSelec",
+						nombreOfertaSelec));
+				// Add more parameters as necessary
+
+				// Create the HTTP request
+				HttpParams httpParameters = new BasicHttpParams();
+
+				// Setup timeouts
+				HttpConnectionParams
+						.setConnectionTimeout(httpParameters, 15000);
+				HttpConnectionParams.setSoTimeout(httpParameters, 15000);
+
+				HttpClient httpclient = new DefaultHttpClient(httpParameters);
+				HttpPost httppost = new HttpPost("http://" + ip2
+						+ "/clientservertest/desmarcarFavorita.php");
+				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+				HttpResponse response = httpclient.execute(httppost);
+				HttpEntity entity = response.getEntity();
+
+			} catch (Exception e) {
+				Log.e("ClientServerDemo", "Error:", e);
+				exception = e;
+			}
+
+			return true;
+		}
+
+		@Override
+		protected void onPostExecute(Boolean valid) {
+			// Update the UI
+
+			if (exception != null) {
+				Toast.makeText(mContext, exception.getMessage(),
+						Toast.LENGTH_LONG).show();
+			}
+
+			super.onPostExecute(valid);
+			SaleDetails.this.finish();
+			SaleDetails.this.startActivity(SaleDetails.this.getIntent());
+
+		}
 
 	}
 
