@@ -20,7 +20,6 @@ import org.json.JSONObject;
 
 import android.content.Context;
 import android.content.Intent;
-import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -31,11 +30,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
-import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
@@ -104,7 +101,7 @@ public class UserView extends FragmentActivity implements OnMapClickListener {
 	}
 
 	private void lanzarFavoritas(View view) {
-		Intent i = new Intent(this, UserView.class);
+		Intent i = new Intent(this, Favourites.class);
 		i.putExtra("user", getIntent().getStringExtra("user"));
 		startActivity(i);
 	}
@@ -224,7 +221,7 @@ public class UserView extends FragmentActivity implements OnMapClickListener {
 				Boolean visiblefin = new Boolean(estaActiva);
 				String descripcionfin = descripcion.get(i);
 				String direccionfin = direccion.get(i);
-				
+
 				mapa.addMarker(new MarkerOptions()
 						.position(new LatLng(latitudfin, longitudfin))
 						.title(nombrefin)
