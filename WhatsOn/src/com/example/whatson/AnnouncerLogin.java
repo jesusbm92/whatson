@@ -80,18 +80,6 @@ public class AnnouncerLogin extends Activity {
 		return "";
 	}
 
-	public void checkUser(String userToSearch) {
-
-	}
-
-	// Este metodo se eliminara cuando se haga la vista de usuario (sirve para
-	// probar
-	// si funciona la consulta de base de datos)
-	public void launchIndexParaProbar(View view) {
-		Intent i = new Intent(this, Index.class);
-		startActivity(i);
-	}
-
 	private class DoPOST extends AsyncTask<String, Void, Boolean> {
 
 		Context mContext = null;
@@ -166,7 +154,9 @@ public class AnnouncerLogin extends Activity {
 			super.onPostExecute(valid);
 			login.setEnabled(true);
 			if (passwordBD.equals(sha1(password.getText().toString()))) {
-				finish();
+				Intent i = new Intent(AnnouncerLogin.this, AnnouncerView.class);
+				i.putExtra("announcer", userres);
+				startActivity(i);
 			}
 
 		}

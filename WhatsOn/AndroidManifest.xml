@@ -74,6 +74,8 @@
         <activity android:name="com.example.whatson.Favourites"></activity>
         <activity android:name="com.example.whatson.NonRegisteredView"></activity>
         <activity android:name="com.example.whatson.SaleDetailsNonRegistered"></activity>
+        <activity android:name="com.example.whatson.AnnouncerView"></activity>
+        <activity android:name="com.example.whatson.CreateSale"></activity>
     </application>
 
 </manifest>

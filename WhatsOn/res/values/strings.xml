@@ -28,6 +28,10 @@
     <string name="marcarfavorita">Marcar Oferta Favorita</string>
     <string name="desmarcarfavorita">Desmarcar Oferta Favorita</string>
     <string name="noFavourites">No hay ofertas Favoritas</string>
+    <string name="announcerMenu">Menu Anunciante</string>
+    <string name="verOfertas">Ver Ofertas</string>
+    <string name="crearOferta">Crear Oferta</string>
+    <string name="categoria">Categoria</string>
 
     <string-array name="selectUser">
         <item>Usuario</item>
