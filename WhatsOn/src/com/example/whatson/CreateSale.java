@@ -19,10 +19,7 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.google.android.gms.internal.bc;
-
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -30,12 +27,13 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemSelectedListener;
 
 public class CreateSale extends Activity {
 
@@ -46,11 +44,23 @@ public class CreateSale extends Activity {
 	private EditText nombreOferta;
 	private EditText descripcionOferta;
 	private EditText direccionOferta;
+	private TextView activaTexto;
+	private Spinner activaSelect;
+	private Button guardar;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.createsale);
+
+		// Ocultamos de la vista de creación los elementos para la
+		// vista de modificacion
+		activaTexto = (TextView) findViewById(R.id.textView7);
+		activaTexto.setVisibility(View.GONE);
+		activaSelect = (Spinner) findViewById(R.id.spinner3);
+		activaSelect.setVisibility(View.GONE);
+		guardar = (Button) findViewById(R.id.GuardarCambios);
+		guardar.setVisibility(View.GONE);
 
 		nombreOferta = (EditText) findViewById(R.id.NewNombreOferta);
 		descripcionOferta = (EditText) findViewById(R.id.NewDescOfer);

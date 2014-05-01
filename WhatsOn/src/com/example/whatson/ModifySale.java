@@ -15,10 +15,10 @@ import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -26,68 +26,75 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.AdapterView.OnItemSelectedListener;
 
-public class SaleDetails extends Activity {
+public class ModifySale extends Activity {
 
-	Button ofertaFavorita;
-	Button ofertaNoFavorita;
-	TextView nombreOferta;
-	TextView direccionOferta;
-	TextView descripcionOferta;
-	TextView activaOferta;
-	Button bcancel;
-	Button modificar;
-	Button borrar;
+	private Button bcancel;
+	private Button bcreate;
+	private Spinner select;
+	private String objectSelected;
+	private EditText nombreOferta;
+	private EditText descripcionOferta;
+	private EditText direccionOferta;
+	private TextView activaTexto;
+	private Spinner activaSelect;
+	private String activaSelected;
+	private Button guardar;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.saledetails);
-		modificar = (Button) findViewById(R.id.modificaOferta);
-		modificar.setVisibility(View.GONE);
-		borrar = (Button) findViewById(R.id.borrarOferta);
-		borrar.setVisibility(View.GONE);
-		ofertaFavorita = (Button) findViewById(R.id.FavoritaOferta);
-		ofertaFavorita.setVisibility(View.GONE);
-		ofertaFavorita.setOnClickListener(new OnClickListener() {
+		setContentView(R.layout.createsale);
+
+		activaTexto = (TextView) findViewById(R.id.textView7);
+		activaSelect = (Spinner) findViewById(R.id.spinner3);
+		activaSelected = (String) activaSelect.getSelectedItem();
+		guardar = (Button) findViewById(R.id.GuardarCambios);
+		guardar.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				MarcarOfertaFavorita marcarOferta = new MarcarOfertaFavorita(
-						SaleDetails.this, getIntent().getStringExtra("user"),
-						getIntent().getStringExtra("oferta"));
-				marcarOferta.execute();
+				DoPOSTGuardar d = new DoPOSTGuardar(ModifySale.this,
+						nombreOferta.getText().toString(), descripcionOferta
+								.getText().toString(), direccionOferta
+								.getText().toString(), activaSelected,
+						objectSelected);
+				d.execute();
 
 			}
 		});
-		ofertaNoFavorita = (Button) findViewById(R.id.NoFavoritaOferta);
-		ofertaNoFavorita.setVisibility(View.GONE);
-		ofertaNoFavorita.setOnClickListener(new OnClickListener() {
+
+		nombreOferta = (EditText) findViewById(R.id.NewNombreOferta);
+		descripcionOferta = (EditText) findViewById(R.id.NewDescOfer);
+		direccionOferta = (EditText) findViewById(R.id.newDirOfer);
+		select = (Spinner) findViewById(R.id.spinner2);
+		DoPOST doPost = new DoPOST(this);
+		doPost.execute();
+		// Popular el select antes de esta linea con las categorias
+		objectSelected = (String) select.getSelectedItem();
+		select.setOnItemSelectedListener(new OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> arg0, View arg1,
+					int arg2, long arg3) {
+				objectSelected = select.getSelectedItem().toString();
+			}
 
 			@Override
-			public void onClick(View v) {
-				DesmarcarOfertaFavorita desmarcarOferta = new DesmarcarOfertaFavorita(
-						SaleDetails.this, getIntent().getStringExtra("user"),
-						getIntent().getStringExtra("oferta"));
-				desmarcarOferta.execute();
+			public void onNothingSelected(AdapterView<?> arg0) {
+
 			}
 		});
-		nombreOferta = (TextView) findViewById(R.id.NombreOferta);
-		direccionOferta = (TextView) findViewById(R.id.DireccionOferta);
-		descripcionOferta = (TextView) findViewById(R.id.DescripcionOferta);
-		activaOferta = (TextView) findViewById(R.id.ActivaOferta);
-		DoPOST mDoPOST = new DoPOST(SaleDetails.this, getIntent()
-				.getStringExtra("user"), getIntent().getStringExtra("oferta"));
 
-		mDoPOST.execute();
-
-		bcancel = (Button) findViewById(R.id.CancelarOferta);
+		bcreate = (Button) findViewById(R.id.AceptarCrearOferta);
+		bcreate.setVisibility(View.GONE);
+		bcancel = (Button) findViewById(R.id.CancelarCrearOferta);
 		bcancel.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -101,23 +108,14 @@ public class SaleDetails extends Activity {
 	private class DoPOST extends AsyncTask<String, Void, Boolean> {
 
 		Context mContext = null;
-		String user = "";
-		String nombreOfertaSelec = "";
+		List<String> categoriasPost = new ArrayList<String>();
 		String ip = "10.0.2.2";
 		String ip2 = "192.168.1.12";
 
-		String nombre = "";
-		String direccion = "";
-		String descripcion = "";
-		Boolean esFavorita = false;
-		String activa = "";
-
 		Exception exception = null;
 
-		DoPOST(Context context, String user, String nombreOfertaSelec) {
+		DoPOST(Context context) {
 			mContext = context;
-			this.user = user;
-			this.nombreOfertaSelec = nombreOfertaSelec;
 		}
 
 		@Override
@@ -125,11 +123,7 @@ public class SaleDetails extends Activity {
 
 			try {
 
-				List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(
-						2);
-				nameValuePairs.add(new BasicNameValuePair("user", user));
-				nameValuePairs.add(new BasicNameValuePair("nombreOfertaSelec",
-						nombreOfertaSelec));
+				List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 				// Add more parameters as necessary
 
 				// Create the HTTP request
@@ -142,7 +136,92 @@ public class SaleDetails extends Activity {
 
 				HttpClient httpclient = new DefaultHttpClient(httpParameters);
 				HttpPost httppost = new HttpPost("http://" + ip2
-						+ "/clientservertest/saleDetails.php");
+						+ "/clientservertest/listaCategorias.php");
+				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+				HttpResponse response = httpclient.execute(httppost);
+				HttpEntity entity = response.getEntity();
+
+				String result = EntityUtils.toString(entity);
+
+				// Create a JSON object from the request response
+				JSONArray jsonArray = new JSONArray(result);
+
+				// Retrieve the data from the JSON object
+				for (int i = 0; i < jsonArray.length(); i++) {
+					JSONObject jsonObject = jsonArray.getJSONObject(i);
+					String nombre = jsonObject.getString("Nombre");
+
+					categoriasPost.add(nombre);
+				}
+
+			} catch (Exception e) {
+				Log.e("ClientServerDemo", "Error:", e);
+				exception = e;
+			}
+
+			return true;
+		}
+
+		@Override
+		protected void onPostExecute(Boolean valid) {
+			// Update the UI
+
+			if (exception != null) {
+				Toast.makeText(mContext, exception.getMessage(),
+						Toast.LENGTH_LONG).show();
+			}
+
+			super.onPostExecute(valid);
+			ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+					ModifySale.this, android.R.layout.simple_spinner_item,
+					categoriasPost);
+			select.setAdapter(adapter);
+			DoPOSTRellenar d = new DoPOSTRellenar(ModifySale.this,
+					ModifySale.this.getIntent().getExtras().getString("oferta"));
+			d.execute();
+
+		}
+	}
+
+	private class DoPOSTRellenar extends AsyncTask<String, Void, Boolean> {
+
+		Context mContext = null;
+		String nombreOferta = "";
+		String direccion = "";
+		String descripcion = "";
+		String activa = "";
+		List<String> categoriasPost = new ArrayList<String>();
+		String ip = "10.0.2.2";
+		String ip2 = "192.168.1.12";
+
+		Exception exception = null;
+
+		DoPOSTRellenar(Context context, String nombreOferta) {
+			mContext = context;
+			this.nombreOferta = nombreOferta;
+		}
+
+		@Override
+		protected Boolean doInBackground(String... arg0) {
+
+			try {
+
+				List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+				nameValuePairs.add(new BasicNameValuePair("nombreOfertaSelec",
+						nombreOferta));
+				// Add more parameters as necessary
+
+				// Create the HTTP request
+				HttpParams httpParameters = new BasicHttpParams();
+
+				// Setup timeouts
+				HttpConnectionParams
+						.setConnectionTimeout(httpParameters, 15000);
+				HttpConnectionParams.setSoTimeout(httpParameters, 15000);
+
+				HttpClient httpclient = new DefaultHttpClient(httpParameters);
+				HttpPost httppost = new HttpPost("http://" + ip2
+						+ "/clientservertest/saleDetailsNonRegistered.php");
 				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 				HttpResponse response = httpclient.execute(httppost);
 				HttpEntity entity = response.getEntity();
@@ -152,11 +231,10 @@ public class SaleDetails extends Activity {
 				JSONObject jsonObject = new JSONObject(result);
 
 				// Retrieve the data from the JSON object
-				this.nombre = (String) jsonObject.get("Nombre");
+				this.nombreOferta = (String) jsonObject.get("Nombre");
 				this.descripcion = (String) jsonObject.get("Descripcion");
 				this.direccion = (String) jsonObject.get("Direccion");
 				this.activa = (String) jsonObject.get("Activa");
-				this.esFavorita = (Boolean) jsonObject.get("esFavorita");
 
 			} catch (Exception e) {
 				Log.e("ClientServerDemo", "Error:", e);
@@ -176,39 +254,42 @@ public class SaleDetails extends Activity {
 			}
 
 			super.onPostExecute(valid);
-			nombreOferta.setText(nombre);
+			ModifySale.this.nombreOferta.setText(nombreOferta);
 			descripcionOferta.setText(descripcion);
 			direccionOferta.setText(direccion);
 			if (activa.equals("1")) {
-				activaOferta.setText("Si");
+				activaSelect.setSelection(0);
+				activaSelected = "1";
 			} else {
-				activaOferta.setText("No");
+				activaSelect.setSelection(1);
+				activaSelected = "0";
 			}
-			if (esFavorita.equals(true)) {
-				ofertaNoFavorita.setVisibility(View.VISIBLE);
-			} else {
-				ofertaFavorita.setVisibility(View.VISIBLE);
-			}
-
 		}
 
 	}
 
-	private class MarcarOfertaFavorita extends AsyncTask<String, Void, Boolean> {
+	private class DoPOSTGuardar extends AsyncTask<String, Void, Boolean> {
 
 		Context mContext = null;
-		String user = "";
-		String nombreOfertaSelec = "";
+		String nombreOferta = "";
+		String direccionOferta = "";
+		String descripcionOferta = "";
+		String activaOferta = "";
+		String categoriaOferta = "";
 		String ip = "10.0.2.2";
 		String ip2 = "192.168.1.12";
 
 		Exception exception = null;
 
-		MarcarOfertaFavorita(Context context, String user,
-				String nombreOfertaSelec) {
+		DoPOSTGuardar(Context context, String nombreOferta,
+				String descripcionOferta, String direccionOferta,
+				String activaOferta, String categoriaOferta) {
 			mContext = context;
-			this.user = user;
-			this.nombreOfertaSelec = nombreOfertaSelec;
+			this.nombreOferta = nombreOferta;
+			this.descripcionOferta = descripcionOferta;
+			this.direccionOferta = direccionOferta;
+			this.activaOferta = activaOferta;
+			this.categoriaOferta = categoriaOferta;
 		}
 
 		@Override
@@ -216,12 +297,19 @@ public class SaleDetails extends Activity {
 
 			try {
 
-				// Setup the parameters
-				ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(
-						2);
-				nameValuePairs.add(new BasicNameValuePair("user", user));
-				nameValuePairs.add(new BasicNameValuePair("nombreOfertaSelec",
-						nombreOfertaSelec));
+				List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(
+						5);
+				nameValuePairs.add(new BasicNameValuePair("Nombre",
+						nombreOferta));
+				nameValuePairs.add(new BasicNameValuePair("Descripcion",
+						descripcionOferta));
+				nameValuePairs.add(new BasicNameValuePair("Direccion",
+						direccionOferta));
+				nameValuePairs.add(new BasicNameValuePair("Activa",
+						activaOferta));
+				nameValuePairs.add(new BasicNameValuePair("Categoria",
+						categoriaOferta));
+
 				// Add more parameters as necessary
 
 				// Create the HTTP request
@@ -234,10 +322,11 @@ public class SaleDetails extends Activity {
 
 				HttpClient httpclient = new DefaultHttpClient(httpParameters);
 				HttpPost httppost = new HttpPost("http://" + ip2
-						+ "/clientservertest/marcarFavorita.php");
+						+ "/clientservertest/saleModify.php");
 				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 				HttpResponse response = httpclient.execute(httppost);
 				HttpEntity entity = response.getEntity();
+				String result = EntityUtils.toString(entity);
 
 			} catch (Exception e) {
 				Log.e("ClientServerDemo", "Error:", e);
@@ -257,82 +346,7 @@ public class SaleDetails extends Activity {
 			}
 
 			super.onPostExecute(valid);
-			SaleDetails.this.finish();
-			SaleDetails.this.startActivity(SaleDetails.this.getIntent());
-
+			finish();
 		}
-
 	}
-
-	private class DesmarcarOfertaFavorita extends
-			AsyncTask<String, Void, Boolean> {
-
-		Context mContext = null;
-		String user = "";
-		String nombreOfertaSelec = "";
-		String ip = "10.0.2.2";
-		String ip2 = "192.168.1.12";
-
-		Exception exception = null;
-
-		DesmarcarOfertaFavorita(Context context, String user,
-				String nombreOfertaSelec) {
-			mContext = context;
-			this.user = user;
-			this.nombreOfertaSelec = nombreOfertaSelec;
-		}
-
-		@Override
-		protected Boolean doInBackground(String... arg0) {
-
-			try {
-
-				// Setup the parameters
-				ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(
-						2);
-				nameValuePairs.add(new BasicNameValuePair("user", user));
-				nameValuePairs.add(new BasicNameValuePair("nombreOfertaSelec",
-						nombreOfertaSelec));
-				// Add more parameters as necessary
-
-				// Create the HTTP request
-				HttpParams httpParameters = new BasicHttpParams();
-
-				// Setup timeouts
-				HttpConnectionParams
-						.setConnectionTimeout(httpParameters, 15000);
-				HttpConnectionParams.setSoTimeout(httpParameters, 15000);
-
-				HttpClient httpclient = new DefaultHttpClient(httpParameters);
-				HttpPost httppost = new HttpPost("http://" + ip2
-						+ "/clientservertest/desmarcarFavorita.php");
-				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-				HttpResponse response = httpclient.execute(httppost);
-				HttpEntity entity = response.getEntity();
-
-			} catch (Exception e) {
-				Log.e("ClientServerDemo", "Error:", e);
-				exception = e;
-			}
-
-			return true;
-		}
-
-		@Override
-		protected void onPostExecute(Boolean valid) {
-			// Update the UI
-
-			if (exception != null) {
-				Toast.makeText(mContext, exception.getMessage(),
-						Toast.LENGTH_LONG).show();
-			}
-
-			super.onPostExecute(valid);
-			SaleDetails.this.finish();
-			SaleDetails.this.startActivity(SaleDetails.this.getIntent());
-
-		}
-
-	}
-
 }

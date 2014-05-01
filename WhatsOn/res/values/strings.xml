@@ -32,12 +32,22 @@
     <string name="verOfertas">Ver Ofertas</string>
     <string name="crearOferta">Crear Oferta</string>
     <string name="categoria">Categoria</string>
+    <string name="ofertasPublicadas">Ofertas Publicadas</string>
+    <string name="saveChanges">Guardar Cambios</string>
+    <string name="favourites">Favoritas</string>
+    <string name="modificarOferta">Modificar Oferta</string>
+    <string name="borrarOferta">Borrar Oferta</string>
+    <string name="confirmarBorrar">¿Está seguro de que quiere borrar la oferta?</string>
+    <string name="yes">Si</string>
+    <string name="no">No</string>
 
     <string-array name="selectUser">
         <item>Usuario</item>
         <item>Anunciante</item>
     </string-array>
-
-    <string name="favourites">Favoritas</string>
+    <string-array name="activas">
+        <item>Si</item>
+        <item>No</item>
+    </string-array>
 
 </resources>

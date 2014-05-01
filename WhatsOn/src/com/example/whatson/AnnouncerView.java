@@ -23,7 +23,10 @@ public class AnnouncerView extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				finish();
+				Intent i = new Intent(AnnouncerView.this, ListSales.class);
+				i.putExtra("announcer",
+						getIntent().getExtras().getString("announcer"));
+				startActivity(i);
 			}
 		});
 

@@ -11,7 +11,6 @@ public class Access extends Activity {
 
 	private Button bback;
 	private Button buser;
-	private Button bguest;
 	private Button bannouncer;
 	private Button bregister;
 	private Button bnonregistered;

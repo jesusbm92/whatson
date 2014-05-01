@@ -37,12 +37,18 @@ public class SaleDetailsNonRegistered extends Activity {
 	TextView direccionOferta;
 	TextView descripcionOferta;
 	TextView activaOferta;
+	Button modificar;
+	Button borrar;
 	Button bcancel;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.saledetails);
+		modificar = (Button) findViewById(R.id.modificaOferta);
+		modificar.setVisibility(View.GONE);
+		borrar = (Button) findViewById(R.id.borrarOferta);
+		borrar.setVisibility(View.GONE);
 		bfav = (Button) findViewById(R.id.FavoritaOferta);
 		bfav.setVisibility(View.GONE);
 		bnofav = (Button) findViewById(R.id.NoFavoritaOferta);
