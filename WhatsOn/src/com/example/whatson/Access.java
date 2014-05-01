@@ -14,6 +14,7 @@ public class Access extends Activity {
 	private Button bguest;
 	private Button bannouncer;
 	private Button bregister;
+	private Button bnonregistered;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -36,6 +37,16 @@ public class Access extends Activity {
 
 			}
 		});
+		
+		bnonregistered = (Button) findViewById(R.id.ButtonGuest);
+		bnonregistered.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				launchNonRegisteredView(null);
+			}
+		});
+		
 		bannouncer = (Button) findViewById(R.id.ButtonAnnouncer);
 		bannouncer.setOnClickListener(new OnClickListener() {
 			
@@ -61,6 +72,11 @@ public class Access extends Activity {
 
 	public void launchUserLogin(View view) {
 		Intent i = new Intent(this, UserLogin.class);
+		startActivity(i);
+	}
+	
+	public void launchNonRegisteredView(View view){
+		Intent i = new Intent(this, NonRegisteredView.class);
 		startActivity(i);
 	}
 	

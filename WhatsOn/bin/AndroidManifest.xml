@@ -72,6 +72,8 @@
             android:value="@integer/google_play_services_version" />
         <activity android:name="com.example.whatson.SaleDetails"></activity>
         <activity android:name="com.example.whatson.Favourites"></activity>
+        <activity android:name="com.example.whatson.NonRegisteredView"></activity>
+        <activity android:name="com.example.whatson.SaleDetailsNonRegistered"></activity>
     </application>
 
 </manifest>

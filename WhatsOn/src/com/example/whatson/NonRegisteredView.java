@@ -31,15 +31,16 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class UserView extends FragmentActivity implements OnMapClickListener {
+public class NonRegisteredView extends FragmentActivity implements
+		OnMapClickListener {
 
 	private GoogleMap mapa;
 
@@ -67,8 +68,7 @@ public class UserView extends FragmentActivity implements OnMapClickListener {
 			public void onInfoWindowClick(Marker marker) {
 				// Aqui poner lo que se quiera para cuando se pulse en la info
 				// del marker
-				Intent i = new Intent(UserView.this, SaleDetails.class);
-				i.putExtra("user", getIntent().getStringExtra("user"));
+				Intent i = new Intent(NonRegisteredView.this, SaleDetailsNonRegistered.class);
 				i.putExtra("oferta", marker.getTitle());
 				startActivity(i);
 			}
@@ -76,34 +76,8 @@ public class UserView extends FragmentActivity implements OnMapClickListener {
 		// Location myLoc = mapa.getMyLocation();
 		// mapa.moveCamera(CameraUpdateFactory.newLatLngZoom(
 		// new LatLng(myLoc.getLatitude(), myLoc.getLongitude()), 18));
-		DoPOST dopost = new DoPOST(UserView.this, 2);
+		DoPOST dopost = new DoPOST(NonRegisteredView.this, 2);
 		dopost.execute();
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		super.onCreateOptionsMenu(menu);
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.menuuserview, menu);
-		return true;
-		/** true -> el menú ya está visible */
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.favourites:
-			lanzarFavoritas(null);
-			break;
-		}
-		return true;
-		/** true -> consumimos el item, no se propaga */
-	}
-
-	private void lanzarFavoritas(View view) {
-		Intent i = new Intent(this, Favourites.class);
-		i.putExtra("user", getIntent().getStringExtra("user"));
-		startActivity(i);
 	}
 
 	@Override
@@ -231,7 +205,7 @@ public class UserView extends FragmentActivity implements OnMapClickListener {
 						.icon(BitmapDescriptorFactory
 								.fromResource(R.drawable.ic_launcher))
 						.anchor(0.5f, 0.5f));
-				mapa.setOnMapClickListener(UserView.this);
+				mapa.setOnMapClickListener(NonRegisteredView.this);
 			}
 
 		}

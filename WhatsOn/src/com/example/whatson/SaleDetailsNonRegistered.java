@@ -18,25 +18,21 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class SaleDetails extends Activity {
+public class SaleDetailsNonRegistered extends Activity {
 
-	Button ofertaFavorita;
-	Button ofertaNoFavorita;
+	Button bfav;
+	Button bnofav;
+
 	TextView nombreOferta;
 	TextView direccionOferta;
 	TextView descripcionOferta;
@@ -47,37 +43,16 @@ public class SaleDetails extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.saledetails);
-		ofertaFavorita = (Button) findViewById(R.id.FavoritaOferta);
-		ofertaFavorita.setVisibility(View.GONE);
-		ofertaFavorita.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				MarcarOfertaFavorita marcarOferta = new MarcarOfertaFavorita(
-						SaleDetails.this, getIntent().getStringExtra("user"),
-						getIntent().getStringExtra("oferta"));
-				marcarOferta.execute();
-
-			}
-		});
-		ofertaNoFavorita = (Button) findViewById(R.id.NoFavoritaOferta);
-		ofertaNoFavorita.setVisibility(View.GONE);
-		ofertaNoFavorita.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				DesmarcarOfertaFavorita desmarcarOferta = new DesmarcarOfertaFavorita(
-						SaleDetails.this, getIntent().getStringExtra("user"),
-						getIntent().getStringExtra("oferta"));
-				desmarcarOferta.execute();
-			}
-		});
+		bfav = (Button) findViewById(R.id.FavoritaOferta);
+		bfav.setVisibility(View.GONE);
+		bnofav = (Button) findViewById(R.id.NoFavoritaOferta);
+		bnofav.setVisibility(View.GONE);
 		nombreOferta = (TextView) findViewById(R.id.NombreOferta);
 		direccionOferta = (TextView) findViewById(R.id.DireccionOferta);
 		descripcionOferta = (TextView) findViewById(R.id.DescripcionOferta);
 		activaOferta = (TextView) findViewById(R.id.ActivaOferta);
-		DoPOST mDoPOST = new DoPOST(SaleDetails.this, getIntent()
-				.getStringExtra("user"), getIntent().getStringExtra("oferta"));
+		DoPOST mDoPOST = new DoPOST(SaleDetailsNonRegistered.this, getIntent()
+				.getStringExtra("oferta"));
 
 		mDoPOST.execute();
 
@@ -103,14 +78,12 @@ public class SaleDetails extends Activity {
 		String nombre = "";
 		String direccion = "";
 		String descripcion = "";
-		Boolean esFavorita = false;
 		String activa = "";
 
 		Exception exception = null;
 
-		DoPOST(Context context, String user, String nombreOfertaSelec) {
+		DoPOST(Context context, String nombreOfertaSelec) {
 			mContext = context;
-			this.user = user;
 			this.nombreOfertaSelec = nombreOfertaSelec;
 		}
 
@@ -119,9 +92,7 @@ public class SaleDetails extends Activity {
 
 			try {
 
-				List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(
-						2);
-				nameValuePairs.add(new BasicNameValuePair("user", user));
+				List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 				nameValuePairs.add(new BasicNameValuePair("nombreOfertaSelec",
 						nombreOfertaSelec));
 				// Add more parameters as necessary
@@ -136,7 +107,7 @@ public class SaleDetails extends Activity {
 
 				HttpClient httpclient = new DefaultHttpClient(httpParameters);
 				HttpPost httppost = new HttpPost("http://" + ip2
-						+ "/clientservertest/saleDetails.php");
+						+ "/clientservertest/saleDetailsNonRegistered.php");
 				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 				HttpResponse response = httpclient.execute(httppost);
 				HttpEntity entity = response.getEntity();
@@ -150,7 +121,6 @@ public class SaleDetails extends Activity {
 				this.descripcion = (String) jsonObject.get("Descripcion");
 				this.direccion = (String) jsonObject.get("Direccion");
 				this.activa = (String) jsonObject.get("Activa");
-				this.esFavorita = (Boolean) jsonObject.get("esFavorita");
 
 			} catch (Exception e) {
 				Log.e("ClientServerDemo", "Error:", e);
@@ -177,11 +147,6 @@ public class SaleDetails extends Activity {
 				activaOferta.setText("Si");
 			} else {
 				activaOferta.setText("No");
-			}
-			if (esFavorita.equals(true)) {
-				ofertaNoFavorita.setVisibility(View.VISIBLE);
-			} else {
-				ofertaFavorita.setVisibility(View.VISIBLE);
 			}
 
 		}
@@ -251,8 +216,9 @@ public class SaleDetails extends Activity {
 			}
 
 			super.onPostExecute(valid);
-			SaleDetails.this.finish();
-			SaleDetails.this.startActivity(SaleDetails.this.getIntent());
+			SaleDetailsNonRegistered.this.finish();
+			SaleDetailsNonRegistered.this
+					.startActivity(SaleDetailsNonRegistered.this.getIntent());
 
 		}
 
@@ -322,8 +288,9 @@ public class SaleDetails extends Activity {
 			}
 
 			super.onPostExecute(valid);
-			SaleDetails.this.finish();
-			SaleDetails.this.startActivity(SaleDetails.this.getIntent());
+			SaleDetailsNonRegistered.this.finish();
+			SaleDetailsNonRegistered.this
+					.startActivity(SaleDetailsNonRegistered.this.getIntent());
 
 		}
 
