@@ -95,6 +95,15 @@ public class SaleDetailsAnnouncer extends Activity {
 
 	}
 
+	@Override
+	public void onResume() { // After a pause OR at startup
+		super.onResume();
+		DoPOST mDoPOST = new DoPOST(SaleDetailsAnnouncer.this, getIntent()
+				.getStringExtra("oferta"));
+
+		mDoPOST.execute();
+	}
+
 	private class DoPOST extends AsyncTask<String, Void, Boolean> {
 
 		Context mContext = null;

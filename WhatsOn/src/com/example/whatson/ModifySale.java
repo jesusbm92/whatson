@@ -56,6 +56,18 @@ public class ModifySale extends Activity {
 		activaTexto = (TextView) findViewById(R.id.textView7);
 		activaSelect = (Spinner) findViewById(R.id.spinner3);
 		activaSelected = (String) activaSelect.getSelectedItem();
+		activaSelect.setOnItemSelectedListener(new OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> arg0, View arg1,
+					int arg2, long arg3) {
+				activaSelected = (String) activaSelect.getSelectedItem();
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+
+			}
+		});
 		guardar = (Button) findViewById(R.id.GuardarCambios);
 		guardar.setOnClickListener(new OnClickListener() {
 
@@ -259,10 +271,8 @@ public class ModifySale extends Activity {
 			direccionOferta.setText(direccion);
 			if (activa.equals("1")) {
 				activaSelect.setSelection(0);
-				activaSelected = "1";
 			} else {
 				activaSelect.setSelection(1);
-				activaSelected = "0";
 			}
 		}
 
@@ -288,7 +298,14 @@ public class ModifySale extends Activity {
 			this.nombreOferta = nombreOferta;
 			this.descripcionOferta = descripcionOferta;
 			this.direccionOferta = direccionOferta;
-			this.activaOferta = activaOferta;
+			if (activaOferta.equals("Si")) {
+				activaSelect.setSelection(0);
+				activaSelected = "1";
+			} else {
+				activaSelect.setSelection(1);
+				activaSelected = "0";
+			}
+			this.activaOferta = activaSelected;
 			this.categoriaOferta = categoriaOferta;
 		}
 
