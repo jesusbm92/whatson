@@ -80,6 +80,7 @@
         <activity android:name="com.example.whatson.SaleDetailsAnnouncer"></activity>
         <activity android:name="com.example.whatson.ConfirmDeleteSale" android:theme="@android:style/Theme.Dialog"></activity>
         <activity android:name="com.example.whatson.ModifySale"></activity>
+        <activity android:name="com.example.whatson.AdminLogin" android:theme="@android:style/Theme.Dialog"></activity>
     </application>
 
 </manifest>

@@ -6,6 +6,7 @@
     <string name="user">Usuario registrado</string>
     <string name="guest">Entrar sin registrar</string>
     <string name="announcer">Anunciante</string>
+    <string name="admin">Administrador</string>
     <string name="register">Registrarse</string>
     <string name="access">Acceder</string>
     <string name="about">Acerca de</string>

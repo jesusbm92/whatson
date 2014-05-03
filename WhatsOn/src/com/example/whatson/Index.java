@@ -12,6 +12,7 @@ public class Index extends Activity {
 
 	private Button baccess;
 	private Button babout;
+	private Button badmin;
 	private Button bexit;
 
 	@Override
@@ -29,6 +30,14 @@ public class Index extends Activity {
 		bexit.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				finish();
+			}
+		});
+
+		badmin = (Button) findViewById(R.id.ButtonAdmin);
+		badmin.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				Intent i = new Intent(Index.this, AdminLogin.class);
+				startActivity(i);
 			}
 		});
 
