@@ -168,6 +168,7 @@ public class UserLogin extends Activity {
 			super.onPostExecute(valid);
 			login.setEnabled(true);
 			if (passwordBD.equals(sha1(password.getText().toString()))) {
+				finish();
 				launchUserView(null);
 			}
 

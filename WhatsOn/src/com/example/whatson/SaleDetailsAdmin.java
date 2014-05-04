@@ -29,7 +29,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class SaleDetailsAnnouncer extends Activity {
+public class SaleDetailsAdmin extends Activity {
 
 	Button ofertaFavorita;
 	Button ofertaNoFavorita;
@@ -51,17 +51,7 @@ public class SaleDetailsAnnouncer extends Activity {
 		ofertaNoFavorita.setVisibility(View.GONE);
 
 		modificar = (Button) findViewById(R.id.modificaOferta);
-		modificar.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				Intent i = new Intent(SaleDetailsAnnouncer.this,
-						ModifySale.class);
-				i.putExtra("oferta", getIntent().getExtras()
-						.getString("oferta"));
-				startActivity(i);
-			}
-		});
+		modificar.setVisibility(View.GONE);
 		borrar = (Button) findViewById(R.id.borrarOferta);
 		borrar.setOnClickListener(new OnClickListener() {
 
@@ -69,7 +59,7 @@ public class SaleDetailsAnnouncer extends Activity {
 			public void onClick(View v) {
 				// Quitar este finish si da problemas
 				finish();
-				Intent i = new Intent(SaleDetailsAnnouncer.this,
+				Intent i = new Intent(SaleDetailsAdmin.this,
 						ConfirmDeleteSale.class);
 				i.putExtra("oferta", getIntent().getExtras()
 						.getString("oferta"));
@@ -81,7 +71,7 @@ public class SaleDetailsAnnouncer extends Activity {
 		direccionOferta = (TextView) findViewById(R.id.DireccionOferta);
 		descripcionOferta = (TextView) findViewById(R.id.DescripcionOferta);
 		activaOferta = (TextView) findViewById(R.id.ActivaOferta);
-		DoPOST mDoPOST = new DoPOST(SaleDetailsAnnouncer.this, getIntent()
+		DoPOST mDoPOST = new DoPOST(SaleDetailsAdmin.this, getIntent()
 				.getStringExtra("oferta"));
 
 		mDoPOST.execute();
@@ -100,7 +90,7 @@ public class SaleDetailsAnnouncer extends Activity {
 	@Override
 	public void onResume() { // After a pause OR at startup
 		super.onResume();
-		DoPOST mDoPOST = new DoPOST(SaleDetailsAnnouncer.this, getIntent()
+		DoPOST mDoPOST = new DoPOST(SaleDetailsAdmin.this, getIntent()
 				.getStringExtra("oferta"));
 
 		mDoPOST.execute();

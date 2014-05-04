@@ -273,15 +273,21 @@ public class CreateSale extends Activity {
 			// Update the UI
 
 			if (exception != null) {
-				Toast.makeText(mContext, exception.getMessage(),
+				Toast.makeText(
+						mContext,
+						"Su oferta no pudo ser creada, por favor vuelva a introducir la direccion y, si vuelve a fallar, introducirla en otro formato",
 						Toast.LENGTH_LONG).show();
+				bcreate.setEnabled(true);
 			}
 
-			super.onPostExecute(valid);
-			DoPOSTCrear d = new DoPOSTCrear(CreateSale.this, nombre,
-					descripcion, direccion, categoria, latitud1, longitud1,
-					announcer);
-			d.execute();
+			else {
+				super.onPostExecute(valid);
+
+				DoPOSTCrear d = new DoPOSTCrear(CreateSale.this, nombre,
+						descripcion, direccion, categoria, latitud1, longitud1,
+						announcer);
+				d.execute();
+			}
 		}
 	}
 

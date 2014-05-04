@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/background"
+    android:gravity="center"
+    android:orientation="vertical" >
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dip"
+        android:fontFamily="sans-serif"
+        android:gravity="center"
+        android:text="@string/adminMenu"
+        android:textColor="#00ffff"
+        android:textSize="25sp"
+        android:textStyle="bold|italic" />
+
+    <Button
+        android:id="@+id/ButtonVerOfertasA"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/verOfertas" />
+
+    <Button
+        android:id="@+id/ButtonVerUsuariosA"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/verUsuarios" />
+
+    <Button
+        android:id="@+id/ButtonVerAnunciantesA"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/verAnunciantes" />
+
+    <Button
+        android:id="@+id/ButtonVerCategoriasA"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/verCategorias" />
+
+    <Button
+        android:id="@+id/ButtonAtras"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/back" />
+
+</LinearLayout>

@@ -154,6 +154,7 @@ public class AnnouncerLogin extends Activity {
 			super.onPostExecute(valid);
 			login.setEnabled(true);
 			if (passwordBD.equals(sha1(password.getText().toString()))) {
+				finish();
 				Intent i = new Intent(AnnouncerLogin.this, AnnouncerView.class);
 				i.putExtra("announcer", userres);
 				startActivity(i);

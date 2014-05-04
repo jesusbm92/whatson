@@ -1,8 +1,7 @@
 package com.example.whatson;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -11,90 +10,75 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
-import android.app.Activity;
+import android.app.ListActivity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.EditText;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
+import android.widget.AdapterView.OnItemClickListener;
 
-public class AdminLogin extends Activity {
-	private EditText user;
-	private EditText password;
-	private Button login;
-	private String passwordBD = "";
-	private String userBD = "";
+public class ListCategories extends ListActivity {
+
+	private List<String> listaCategorias = new ArrayList<String>();
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.userlogin);
+		setContentView(R.layout.listcategories);
+		DoPOST doPost = new DoPOST(ListCategories.this);
+		doPost.execute();
 
-		user = (EditText) findViewById(R.id.UserLoginText);
-		password = (EditText) findViewById(R.id.UserPasswordText);
-		login = (Button) findViewById(R.id.LoginButton);
-		login.setOnClickListener(new OnClickListener() {
+		getListView().setOnItemClickListener(new OnItemClickListener() {
+			public void onItemClick(AdapterView parent, View v, int position,
+					long id) {
 
-			@Override
-			public void onClick(View v) {
-				DoPOST mDoPOST = new DoPOST(AdminLogin.this, user.getText()
-						.toString());
+				// String entry = (String) parent.getItemAtPosition(position);
+				// Intent i = new Intent(ListCategories.this,
+				// SaleDetailsAdmin.class);
+				// i.putExtra("categoria", entry);
+				// startActivity(i);
 
-				mDoPOST.execute();
-				login.setEnabled(false);
-
-			}
+			};
 		});
-
 	}
 
-	public static String sha1(String s) {
-		try {
-			// Create MD5 Hash
-			MessageDigest digest = java.security.MessageDigest
-					.getInstance("SHA1");
-			digest.update(s.getBytes());
-			byte messageDigest[] = digest.digest();
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		listaCategorias.clear();
+		setListAdapter(new ArrayAdapter<String>(ListCategories.this,
+				android.R.layout.simple_list_item_1, listaCategorias));
+		DoPOST doPost = new DoPOST(ListCategories.this);
+		doPost.execute();
 
-			// Create Hex String
-			StringBuffer hexString = new StringBuffer();
-			for (int i = 0; i < messageDigest.length; i++)
-				hexString.append(String.format("%02X", messageDigest[i]));
-			return hexString.toString();
-
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		}
-		return "";
 	}
 
 	private class DoPOST extends AsyncTask<String, Void, Boolean> {
 
 		Context mContext = null;
-		String userToSearch = "";
 		String ip = "10.0.2.2";
 		String ip2 = "192.168.1.12";
+		Integer longitudArray;
+		// Cada oferta en formato Nombre,descripcion,direccion
+		List<String> categorias = new ArrayList<String>();
 		// Result data
-		String userres;
-		String passres;
 
 		Exception exception = null;
 
-		DoPOST(Context context, String userToSearch) {
+		DoPOST(Context context) {
 			mContext = context;
-			this.userToSearch = userToSearch;
 		}
 
 		@Override
@@ -104,8 +88,6 @@ public class AdminLogin extends Activity {
 
 				// Setup the parameters
 				ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-				nameValuePairs.add(new BasicNameValuePair("UserToSearch",
-						userToSearch));
 				// Add more parameters as necessary
 
 				// Create the HTTP request
@@ -118,7 +100,7 @@ public class AdminLogin extends Activity {
 
 				HttpClient httpclient = new DefaultHttpClient(httpParameters);
 				HttpPost httppost = new HttpPost("http://" + ip2
-						+ "/clientservertest/adminLogin.php");
+						+ "/clientservertest/listaCategorias.php");
 				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 				HttpResponse response = httpclient.execute(httppost);
 				HttpEntity entity = response.getEntity();
@@ -126,11 +108,14 @@ public class AdminLogin extends Activity {
 				String result = EntityUtils.toString(entity);
 
 				// Create a JSON object from the request response
-				JSONObject jsonObject = new JSONObject(result);
+				JSONArray jsonArray = new JSONArray(result);
 
 				// Retrieve the data from the JSON object
-				userres = (String) jsonObject.get("user");
-				passres = (String) jsonObject.get("password");
+				for (int i = 0; i < jsonArray.length(); i++) {
+					JSONObject jsonObject = jsonArray.getJSONObject(i);
+					String nombre1 = (String) jsonObject.get("Nombre");
+					categorias.add(nombre1);
+				}
 
 			} catch (Exception e) {
 				Log.e("ClientServerDemo", "Error:", e);
@@ -142,9 +127,6 @@ public class AdminLogin extends Activity {
 
 		@Override
 		protected void onPostExecute(Boolean valid) {
-			// Update the UI
-			userBD = this.userres;
-			passwordBD = this.passres;
 
 			if (exception != null) {
 				Toast.makeText(mContext, exception.getMessage(),
@@ -152,15 +134,17 @@ public class AdminLogin extends Activity {
 			}
 
 			super.onPostExecute(valid);
-			login.setEnabled(true);
-			if (passwordBD.equals(sha1(password.getText().toString()))) {
-				finish();
-				Intent i = new Intent(AdminLogin.this, AdminView.class);
-				i.putExtra("admin", userres);
-				startActivity(i);
+
+			for (String i : categorias) {
+				if (!listaCategorias.contains(i)) {
+					listaCategorias.add(i);
+				}
+
 			}
 
-		}
+			setListAdapter(new ArrayAdapter<String>(ListCategories.this,
+					android.R.layout.simple_list_item_1, listaCategorias));
 
+		}
 	}
 }

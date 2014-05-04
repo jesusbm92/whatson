@@ -81,6 +81,12 @@
         <activity android:name="com.example.whatson.ConfirmDeleteSale" android:theme="@android:style/Theme.Dialog"></activity>
         <activity android:name="com.example.whatson.ModifySale"></activity>
         <activity android:name="com.example.whatson.AdminLogin" android:theme="@android:style/Theme.Dialog"></activity>
+        <activity android:name="com.example.whatson.AdminView"></activity>
+        <activity android:name="com.example.whatson.ListUsers"></activity>
+        <activity android:name="com.example.whatson.ListAnnouncers"></activity>
+        <activity android:name="com.example.whatson.ListCategories"></activity>
+        <activity android:name="com.example.whatson.ListSalesAdmin"></activity>
+        <activity android:name="com.example.whatson.SaleDetailsAdmin"></activity>
     </application>
 
 </manifest>

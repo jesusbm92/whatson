@@ -15,6 +15,7 @@
     <string name="back">Atrás</string>
     <string name="userlogin">Login Usuario</string>
     <string name="usuario">Usuario</string>
+    <string name="usuarios">Lista de Usuarios</string>
     <string name="password">Contraseña</string>
     <string name="login">Login</string>
     <string name="announcerlogin">Login Anunciante</string>
@@ -29,10 +30,13 @@
     <string name="marcarfavorita">Marcar Oferta Favorita</string>
     <string name="desmarcarfavorita">Desmarcar Oferta Favorita</string>
     <string name="noFavourites">No hay ofertas Favoritas</string>
+    <string name="noSales">No hay ofertas</string>
     <string name="announcerMenu">Menu Anunciante</string>
     <string name="verOfertas">Ver Ofertas</string>
     <string name="crearOferta">Crear Oferta</string>
     <string name="categoria">Categoria</string>
+    <string name="categorias">Categorias</string>
+    <string name="noCategories">No hay categorias</string>
     <string name="ofertasPublicadas">Ofertas Publicadas</string>
     <string name="saveChanges">Guardar Cambios</string>
     <string name="favourites">Favoritas</string>
@@ -41,6 +45,11 @@
     <string name="confirmarBorrar">¿Está seguro de que quiere borrar la oferta?</string>
     <string name="yes">Si</string>
     <string name="no">No</string>
+    <string name="verAnunciantes">Ver Anunciantes</string>
+    <string name="verUsuarios">Ver Usuarios</string>
+    <string name="verCategorias">Ver Categorias</string>
+    <string name="adminMenu">Menu Admin</string>
+    <string name="noUsers">No hay usuarios</string>
 
     <string-array name="selectUser">
         <item>Usuario</item>

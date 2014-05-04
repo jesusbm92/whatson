@@ -50,13 +50,6 @@ public class Index extends Activity {
 
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.index, menu);
-		return true;
-	}
-
 	public void launchAbout(View view) {
 		Intent i = new Intent(this, About.class);
 		startActivity(i);
