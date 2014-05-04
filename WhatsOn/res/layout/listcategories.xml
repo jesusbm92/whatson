@@ -34,5 +34,11 @@
             android:layout_height="match_parent"
             android:text="@string/noCategories" />
     </FrameLayout>
-
+    
+    <Button
+        android:id="@+id/ButtonCrearCategoria"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/crearCategoria" />
+    
 </LinearLayout>

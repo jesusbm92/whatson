@@ -19,14 +19,15 @@ import org.json.JSONObject;
 
 import android.app.ListActivity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
 
 public class ListUsers extends ListActivity {
 	private List<String> listaUsuarios = new ArrayList<String>();
@@ -42,11 +43,10 @@ public class ListUsers extends ListActivity {
 			public void onItemClick(AdapterView parent, View v, int position,
 					long id) {
 
-				// String entry = (String) parent.getItemAtPosition(position);
-				// Intent i = new Intent(ListCategories.this,
-				// SaleDetailsAdmin.class);
-				// i.putExtra("categoria", entry);
-				// startActivity(i);
+				String entry = (String) parent.getItemAtPosition(position);
+				Intent i = new Intent(ListUsers.this, UserDetails.class);
+				i.putExtra("user", entry);
+				startActivity(i);
 
 			};
 		});

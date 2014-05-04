@@ -19,18 +19,22 @@ import org.json.JSONObject;
 
 import android.app.ListActivity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.Toast;
 
 public class ListCategories extends ListActivity {
 
 	private List<String> listaCategorias = new ArrayList<String>();
+	private Button bcrear;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -43,13 +47,26 @@ public class ListCategories extends ListActivity {
 			public void onItemClick(AdapterView parent, View v, int position,
 					long id) {
 
-				// String entry = (String) parent.getItemAtPosition(position);
-				// Intent i = new Intent(ListCategories.this,
-				// SaleDetailsAdmin.class);
-				// i.putExtra("categoria", entry);
-				// startActivity(i);
+				String entry = (String) parent.getItemAtPosition(position);
+				Intent i = new Intent(ListCategories.this,
+						CategoryDetails.class);
+				i.putExtra("categoria", entry);
+				i.putExtra("create", false);
+				startActivity(i);
 
 			};
+		});
+
+		bcrear = (Button) findViewById(R.id.ButtonCrearCategoria);
+		bcrear.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Intent i = new Intent(ListCategories.this,
+						CategoryDetails.class);
+				i.putExtra("create", true);
+				startActivity(i);
+			}
 		});
 	}
 

@@ -34,6 +34,7 @@
     <string name="announcerMenu">Menu Anunciante</string>
     <string name="verOfertas">Ver Ofertas</string>
     <string name="crearOferta">Crear Oferta</string>
+    <string name="crearCategoria">Crear Categoria</string>
     <string name="categoria">Categoria</string>
     <string name="categorias">Categorias</string>
     <string name="noCategories">No hay categorias</string>
@@ -43,6 +44,7 @@
     <string name="modificarOferta">Modificar Oferta</string>
     <string name="borrarOferta">Borrar Oferta</string>
     <string name="confirmarBorrar">¿Está seguro de que quiere borrar la oferta?</string>
+    <string name="confirmarBorrarUsuario">¿Está seguro de que quiere borrar el usuario?</string>
     <string name="yes">Si</string>
     <string name="no">No</string>
     <string name="verAnunciantes">Ver Anunciantes</string>
@@ -50,6 +52,8 @@
     <string name="verCategorias">Ver Categorias</string>
     <string name="adminMenu">Menu Admin</string>
     <string name="noUsers">No hay usuarios</string>
+    <string name="nickname">Nombre de Usuario</string>
+    <string name="borrarUsuario">Borrar Usuario</string>
 
     <string-array name="selectUser">
         <item>Usuario</item>
