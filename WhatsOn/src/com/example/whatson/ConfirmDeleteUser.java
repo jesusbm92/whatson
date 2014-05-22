@@ -63,7 +63,7 @@ public class ConfirmDeleteUser extends Activity {
 		Context mContext = null;
 		String user = "";
 		String ip = "10.0.2.2";
-		String ip2 = "192.168.1.12";
+		String ip2 = ConfirmDeleteUser.this.getString(R.string.ip);
 
 		Exception exception = null;
 

@@ -102,7 +102,7 @@ public class SaleDetailsAdmin extends Activity {
 		String user = "";
 		String nombreOfertaSelec = "";
 		String ip = "10.0.2.2";
-		String ip2 = "192.168.1.12";
+		String ip2 = SaleDetailsAdmin.this.getString(R.string.ip);
 
 		String nombre = "";
 		String direccion = "";

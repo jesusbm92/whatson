@@ -74,7 +74,7 @@ public class Favourites extends ListActivity {
 		Context mContext = null;
 		String user = null;
 		String ip = "10.0.2.2";
-		String ip2 = "192.168.1.12";
+		String ip2 = Favourites.this.getString(R.string.ip);
 		Integer longitudArray;
 		// Cada oferta en formato Nombre,descripcion,direccion
 		List<String> ofertasFavoritasconComas = new ArrayList<String>();

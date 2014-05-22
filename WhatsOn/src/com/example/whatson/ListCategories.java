@@ -86,7 +86,7 @@ public class ListCategories extends ListActivity {
 
 		Context mContext = null;
 		String ip = "10.0.2.2";
-		String ip2 = "192.168.1.12";
+		String ip2 = ListCategories.this.getString(R.string.ip);
 		Integer longitudArray;
 		// Cada oferta en formato Nombre,descripcion,direccion
 		List<String> categorias = new ArrayList<String>();

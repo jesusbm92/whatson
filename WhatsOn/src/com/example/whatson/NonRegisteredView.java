@@ -89,7 +89,7 @@ public class NonRegisteredView extends FragmentActivity implements
 		Context mContext = null;
 		int idOferta;
 		String ip = "10.0.2.2";
-		String ip2 = "192.168.1.12";
+		String ip2 = NonRegisteredView.this.getString(R.string.ip);
 		Integer longitudArray;
 		List<String> id = new ArrayList<String>();
 		List<String> nombre = new ArrayList<String>();

@@ -122,7 +122,7 @@ public class CreateSale extends Activity {
 		Context mContext = null;
 		List<String> categoriasPost = new ArrayList<String>();
 		String ip = "10.0.2.2";
-		String ip2 = "192.168.1.12";
+		String ip2 = CreateSale.this.getString(R.string.ip);
 
 		Exception exception = null;
 
@@ -201,7 +201,7 @@ public class CreateSale extends Activity {
 		String announcer = "";
 		String categoria = "";
 		String ip = "10.0.2.2";
-		String ip2 = "192.168.1.12";
+		String ip2 = CreateSale.this.getString(R.string.ip);
 
 		Double longitud1 = 0.0;
 		Double latitud1 = 0.0;
@@ -302,7 +302,7 @@ public class CreateSale extends Activity {
 		Double latitud = 0.0;
 		Double longitud = 0.0;
 		String ip = "10.0.2.2";
-		String ip2 = "192.168.1.12";
+		String ip2 = CreateSale.this.getString(R.string.ip);
 
 		Exception exception = null;
 

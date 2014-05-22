@@ -102,7 +102,7 @@ public class CategoryDetails extends Activity {
 		Context mContext = null;
 		String nombre = "";
 		String ip = "10.0.2.2";
-		String ip2 = "192.168.1.12";
+		String ip2 = CategoryDetails.this.getString(R.string.ip);
 
 		Exception exception = null;
 
@@ -167,7 +167,7 @@ public class CategoryDetails extends Activity {
 		String nombre = "";
 		String nombreAntiguo = "";
 		String ip = "10.0.2.2";
-		String ip2 = "192.168.1.12";
+		String ip2 = CategoryDetails.this.getString(R.string.ip);
 
 		Exception exception = null;
 

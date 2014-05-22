@@ -99,7 +99,7 @@ public class UserLogin extends Activity {
 		Context mContext = null;
 		String userToSearch = "";
 		String ip = "10.0.2.2";
-		String ip2 = "192.168.1.12";
+		String ip2 = UserLogin.this.getString(R.string.ip);
 		// Result data
 		String userres;
 		String passres;

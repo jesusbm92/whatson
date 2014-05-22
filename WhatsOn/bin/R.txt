@@ -238,6 +238,7 @@ int string direccion 0x7f060032
 int string exit 0x7f060024
 int string favourites 0x7f060041
 int string guest 0x7f06001d
+int string ip 0x7f06004f
 int string login 0x7f06002a
 int string marcarfavorita 0x7f060034
 int string modificarOferta 0x7f060042

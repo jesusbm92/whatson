@@ -63,7 +63,7 @@ public class ConfirmDeleteSale extends Activity {
 		Context mContext = null;
 		String oferta = "";
 		String ip = "10.0.2.2";
-		String ip2 = "192.168.1.12";
+		String ip2 = ConfirmDeleteSale.this.getString(R.string.ip);
 		// Result data
 		String userres;
 		String passres;

@@ -112,7 +112,7 @@ public class SaleDetailsAnnouncer extends Activity {
 		String user = "";
 		String nombreOfertaSelec = "";
 		String ip = "10.0.2.2";
-		String ip2 = "192.168.1.12";
+		String ip2 = SaleDetailsAnnouncer.this.getString(R.string.ip);
 
 		String nombre = "";
 		String direccion = "";

@@ -114,7 +114,7 @@ public class Register extends Activity {
 		String userToRegister = "";
 		String passwordToRegister = "";
 		String ip = "10.0.2.2";
-		String ip2 = "192.168.1.12";
+		String ip2 = Register.this.getString(R.string.ip);
 
 		Exception exception = null;
 
@@ -197,7 +197,7 @@ public class Register extends Activity {
 		String userToRegister = "";
 		String passwordToRegister = "";
 		String ip = "10.0.2.2";
-		String ip2 = "192.168.1.12";
+		String ip2 = Register.this.getString(R.string.ip);
 
 		Exception exception = null;
 

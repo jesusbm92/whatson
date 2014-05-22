@@ -122,7 +122,7 @@ public class ModifySale extends Activity {
 		Context mContext = null;
 		List<String> categoriasPost = new ArrayList<String>();
 		String ip = "10.0.2.2";
-		String ip2 = "192.168.1.12";
+		String ip2 = ModifySale.this.getString(R.string.ip);
 
 		Exception exception = null;
 
@@ -204,7 +204,7 @@ public class ModifySale extends Activity {
 		String activa = "";
 		List<String> categoriasPost = new ArrayList<String>();
 		String ip = "10.0.2.2";
-		String ip2 = "192.168.1.12";
+		String ip2 = ModifySale.this.getString(R.string.ip);
 
 		Exception exception = null;
 
@@ -287,7 +287,7 @@ public class ModifySale extends Activity {
 		String activaOferta = "";
 		String categoriaOferta = "";
 		String ip = "10.0.2.2";
-		String ip2 = "192.168.1.12";
+		String ip2 = ModifySale.this.getString(R.string.ip);
 
 		Exception exception = null;
 
