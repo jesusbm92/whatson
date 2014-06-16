@@ -20,6 +20,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -375,6 +376,11 @@ public class CreateSale extends Activity {
 			}
 
 			super.onPostExecute(valid);
+			AlertDialog msj = new AlertDialog.Builder(CreateSale.this).create();
+			msj.setTitle("Exito");
+			msj.setMessage("Oferta creada correctamente");
+			msj.show();
+			finish();
 
 		}
 

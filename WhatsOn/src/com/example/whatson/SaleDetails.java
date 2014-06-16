@@ -199,7 +199,6 @@ public class SaleDetails extends Activity {
 		Context mContext = null;
 		String user = "";
 		String nombreOfertaSelec = "";
-		String ip = "10.0.2.2";
 		String ip2 = SaleDetails.this.getString(R.string.ip);
 
 		Exception exception = null;

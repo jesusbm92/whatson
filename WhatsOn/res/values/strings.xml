@@ -54,7 +54,7 @@
     <string name="noUsers">No hay usuarios</string>
     <string name="nickname">Nombre de Usuario</string>
     <string name="borrarUsuario">Borrar Usuario</string>
-    <string name="ip">192.168.137.203</string>
+    <string name="ip">192.168.20.135</string>
 
     <string-array name="selectUser">
         <item>Usuario</item>
