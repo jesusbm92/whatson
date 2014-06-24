@@ -1,5 +1,6 @@
 package com.example.whatson;
 
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +20,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -73,11 +75,11 @@ public class ModifySale extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				DoPOSTGuardar d = new DoPOSTGuardar(ModifySale.this,
+				DoPOSTDireccion d = new DoPOSTDireccion(ModifySale.this,
 						nombreOferta.getText().toString(), descripcionOferta
 								.getText().toString(), direccionOferta
-								.getText().toString(), activaSelected,
-						objectSelected);
+								.getText().toString(), objectSelected,
+						activaSelected);
 				d.execute();
 
 			}
@@ -181,6 +183,11 @@ public class ModifySale extends Activity {
 			if (exception != null) {
 				Toast.makeText(mContext, exception.getMessage(),
 						Toast.LENGTH_LONG).show();
+				AlertDialog msj = new AlertDialog.Builder(ModifySale.this)
+						.create();
+				msj.setTitle("Error");
+				msj.setMessage("No se pudieron cargar las categorias, intente de nuevo");
+				msj.show();
 			}
 
 			super.onPostExecute(valid);
@@ -263,6 +270,11 @@ public class ModifySale extends Activity {
 			if (exception != null) {
 				Toast.makeText(mContext, exception.getMessage(),
 						Toast.LENGTH_LONG).show();
+				AlertDialog msj = new AlertDialog.Builder(ModifySale.this)
+						.create();
+				msj.setTitle("Error");
+				msj.setMessage("No se pudieron cargar los detalles de la oferta, intente de nuevo");
+				msj.show();
 			}
 
 			super.onPostExecute(valid);
@@ -278,6 +290,108 @@ public class ModifySale extends Activity {
 
 	}
 
+	private class DoPOSTDireccion extends AsyncTask<String, Void, Boolean> {
+
+		Context mContext = null;
+		String nombre = "";
+		String descripcion = "";
+		String direccion = "";
+		String activaSelected = "";
+		String categoria = "";
+		String ip = "10.0.2.2";
+		String ip2 = ModifySale.this.getString(R.string.ip);
+
+		Double longitud1 = 0.0;
+		Double latitud1 = 0.0;
+		Exception exception = null;
+
+		DoPOSTDireccion(Context context, String nombre, String descripcion,
+				String direccion, String categoria, String activa) {
+			mContext = context;
+			this.nombre = nombre;
+			this.descripcion = descripcion;
+			this.direccion = direccion;
+			this.categoria = categoria;
+			this.activaSelected = activa;
+		}
+
+		@Override
+		protected Boolean doInBackground(String... arg0) {
+
+			try {
+
+				// Setup the parameters
+				ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+				nameValuePairs.add(new BasicNameValuePair("Direccion",
+						direccion));
+				// Add more parameters as necessary
+
+				// Create the HTTP request
+				HttpParams httpParameters = new BasicHttpParams();
+
+				// Setup timeouts
+				HttpConnectionParams
+						.setConnectionTimeout(httpParameters, 15000);
+				HttpConnectionParams.setSoTimeout(httpParameters, 15000);
+
+				HttpClient httpclient = new DefaultHttpClient(httpParameters);
+				HttpPost httppost = new HttpPost(
+						"http://maps.googleapis.com/maps/api/geocode/json?address="
+								+ URLEncoder.encode(direccion, "UTF-8")
+								+ "&sensor=true");
+				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+				HttpResponse response = httpclient.execute(httppost);
+				HttpEntity entity = response.getEntity();
+
+				String result = EntityUtils.toString(entity);
+
+				// Create a JSON object from the request response
+				JSONObject jsonObject = new JSONObject(result);
+
+				JSONArray res = jsonObject.getJSONArray("results");
+
+				// Retrieve the data from the JSON object
+				JSONObject full = res.getJSONObject(0);
+				JSONObject geometry = full.getJSONObject("geometry");
+				JSONObject location = geometry.getJSONObject("location");
+
+				latitud1 = location.getDouble("lat");
+				longitud1 = location.getDouble("lng");
+
+			} catch (Exception e) {
+				Log.e("ClientServerDemo", "Error:", e);
+				exception = e;
+			}
+
+			return true;
+		}
+
+		@Override
+		protected void onPostExecute(Boolean valid) {
+			// Update the UI
+
+			if (exception != null) {
+				Toast.makeText(mContext, exception.getMessage(),
+						Toast.LENGTH_LONG).show();
+				AlertDialog msj = new AlertDialog.Builder(ModifySale.this)
+						.create();
+				msj.setTitle("Error");
+				msj.setMessage("No se pudieron cargar los detalles de la oferta, intente de nuevo");
+				msj.show();
+				bcreate.setEnabled(true);
+			}
+
+			else {
+				super.onPostExecute(valid);
+
+				DoPOSTGuardar d = new DoPOSTGuardar(ModifySale.this, nombre,
+						descripcion, direccion, activaSelected, latitud1,
+						longitud1, categoria);
+				d.execute();
+			}
+		}
+	}
+
 	private class DoPOSTGuardar extends AsyncTask<String, Void, Boolean> {
 
 		Context mContext = null;
@@ -285,6 +399,8 @@ public class ModifySale extends Activity {
 		String direccionOferta = "";
 		String descripcionOferta = "";
 		String activaOferta = "";
+		Double latitud1 = 0.0;
+		Double longitud1 = 0.0;
 		String categoriaOferta = "";
 		String ip = "10.0.2.2";
 		String ip2 = ModifySale.this.getString(R.string.ip);
@@ -293,7 +409,8 @@ public class ModifySale extends Activity {
 
 		DoPOSTGuardar(Context context, String nombreOferta,
 				String descripcionOferta, String direccionOferta,
-				String activaOferta, String categoriaOferta) {
+				String activaOferta, Double latitud1, Double longitud1,
+				String categoriaOferta) {
 			mContext = context;
 			this.nombreOferta = nombreOferta;
 			this.descripcionOferta = descripcionOferta;
@@ -306,6 +423,8 @@ public class ModifySale extends Activity {
 				activaSelected = "0";
 			}
 			this.activaOferta = activaSelected;
+			this.latitud1 = latitud1;
+			this.longitud1 = longitud1;
 			this.categoriaOferta = categoriaOferta;
 		}
 
@@ -315,7 +434,7 @@ public class ModifySale extends Activity {
 			try {
 
 				List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(
-						5);
+						7);
 				nameValuePairs.add(new BasicNameValuePair("Nombre",
 						nombreOferta));
 				nameValuePairs.add(new BasicNameValuePair("Descripcion",
@@ -324,6 +443,10 @@ public class ModifySale extends Activity {
 						direccionOferta));
 				nameValuePairs.add(new BasicNameValuePair("Activa",
 						activaOferta));
+				nameValuePairs.add(new BasicNameValuePair("Latitud", latitud1
+						.toString()));
+				nameValuePairs.add(new BasicNameValuePair("Longitud", longitud1
+						.toString()));
 				nameValuePairs.add(new BasicNameValuePair("Categoria",
 						categoriaOferta));
 
@@ -348,6 +471,7 @@ public class ModifySale extends Activity {
 			} catch (Exception e) {
 				Log.e("ClientServerDemo", "Error:", e);
 				exception = e;
+
 			}
 
 			return true;
@@ -360,6 +484,11 @@ public class ModifySale extends Activity {
 			if (exception != null) {
 				Toast.makeText(mContext, exception.getMessage(),
 						Toast.LENGTH_LONG).show();
+				AlertDialog msj = new AlertDialog.Builder(ModifySale.this)
+						.create();
+				msj.setTitle("Error");
+				msj.setMessage("No se pudo modificar la oferta, revise los campos introducidos");
+				msj.show();
 			}
 
 			super.onPostExecute(valid);

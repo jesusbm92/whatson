@@ -19,6 +19,7 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -163,6 +164,10 @@ public class UserLogin extends Activity {
 			if (exception != null) {
 				Toast.makeText(mContext, exception.getMessage(),
 						Toast.LENGTH_LONG).show();
+				AlertDialog msj = new AlertDialog.Builder(UserLogin.this).create();
+				msj.setTitle("Error");
+				msj.setMessage("Revise los datos introducidos");
+				msj.show();
 			}
 
 			super.onPostExecute(valid);
@@ -170,6 +175,14 @@ public class UserLogin extends Activity {
 			if (passwordBD.equals(sha1(password.getText().toString()))) {
 				finish();
 				launchUserView(null);
+			}
+			else{
+				Toast.makeText(mContext, exception.getMessage(),
+						Toast.LENGTH_LONG).show();
+				AlertDialog msj = new AlertDialog.Builder(UserLogin.this).create();
+				msj.setTitle("Error");
+				msj.setMessage("Revise los datos introducidos");
+				msj.show();
 			}
 
 		}

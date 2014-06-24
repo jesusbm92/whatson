@@ -18,6 +18,7 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -143,6 +144,10 @@ public class SaleDetailsNonRegistered extends Activity {
 			if (exception != null) {
 				Toast.makeText(mContext, exception.getMessage(),
 						Toast.LENGTH_LONG).show();
+				AlertDialog msj = new AlertDialog.Builder(SaleDetailsNonRegistered.this).create();
+				msj.setTitle("Error");
+				msj.setMessage("No se pudieron cargar los detalles de la oferta, intente de nuevo");
+				msj.show();
 			}
 
 			super.onPostExecute(valid);

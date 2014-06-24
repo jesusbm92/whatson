@@ -173,6 +173,10 @@ public class SaleDetails extends Activity {
 			if (exception != null) {
 				Toast.makeText(mContext, exception.getMessage(),
 						Toast.LENGTH_LONG).show();
+				AlertDialog msj = new AlertDialog.Builder(SaleDetails.this).create();
+				msj.setTitle("Error");
+				msj.setMessage("No se pudieron cargar los detalles de la oferta, intente de nuevo");
+				msj.show();
 			}
 
 			super.onPostExecute(valid);
@@ -253,6 +257,10 @@ public class SaleDetails extends Activity {
 			if (exception != null) {
 				Toast.makeText(mContext, exception.getMessage(),
 						Toast.LENGTH_LONG).show();
+				AlertDialog msj = new AlertDialog.Builder(SaleDetails.this).create();
+				msj.setTitle("Error");
+				msj.setMessage("No se pudo marcar la oferta como favoita");
+				msj.show();
 			}
 
 			super.onPostExecute(valid);
@@ -324,6 +332,10 @@ public class SaleDetails extends Activity {
 			if (exception != null) {
 				Toast.makeText(mContext, exception.getMessage(),
 						Toast.LENGTH_LONG).show();
+				AlertDialog msj = new AlertDialog.Builder(SaleDetails.this).create();
+				msj.setTitle("Error");
+				msj.setMessage("No se pudo desmarcar la oferta de favorita");
+				msj.show();
 			}
 
 			super.onPostExecute(valid);

@@ -19,6 +19,7 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -149,6 +150,10 @@ public class AdminLogin extends Activity {
 			if (exception != null) {
 				Toast.makeText(mContext, exception.getMessage(),
 						Toast.LENGTH_LONG).show();
+				AlertDialog msj = new AlertDialog.Builder(AdminLogin.this).create();
+				msj.setTitle("Error");
+				msj.setMessage("Revise los datos introducidos");
+				msj.show();
 			}
 
 			super.onPostExecute(valid);
@@ -158,6 +163,12 @@ public class AdminLogin extends Activity {
 				Intent i = new Intent(AdminLogin.this, AdminView.class);
 				i.putExtra("admin", userres);
 				startActivity(i);
+			}
+			else{
+				AlertDialog msj = new AlertDialog.Builder(AdminLogin.this).create();
+				msj.setTitle("Error");
+				msj.setMessage("Revise los datos introducidos");
+				msj.show();
 			}
 
 		}

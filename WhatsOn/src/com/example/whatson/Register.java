@@ -164,19 +164,17 @@ public class Register extends Activity {
 		protected void onPostExecute(Boolean valid) {
 			// Update the UI
 
-			if (exception != null) {
-				Toast.makeText(mContext, exception.getMessage(),
-						Toast.LENGTH_LONG).show();
-			}
-
 			super.onPostExecute(valid);
 			baccept.setEnabled(true);
 			if (exception != null) {
+				Toast.makeText(mContext, exception.getMessage(),
+						Toast.LENGTH_LONG).show();
 				AlertDialog msj = new AlertDialog.Builder(Register.this)
 						.create();
 				msj.setTitle("Error");
-				msj.setMessage("No pudo realizarse el registro debido a un problema del servidor, vuelvalo a intentar de nuevo mas tarde");
+				msj.setMessage("El usuario introducido ya existe o hay un problema en el servidor, intentelo de nuevo");
 				msj.show();
+			
 			} else {
 				AlertDialog msj = new AlertDialog.Builder(Register.this)
 						.create();

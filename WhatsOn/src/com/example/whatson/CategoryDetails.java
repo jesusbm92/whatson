@@ -20,6 +20,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -73,9 +74,10 @@ public class CategoryDetails extends Activity {
 					bcreate.setEnabled(false);
 					d.execute();
 				} else {
-					// Poner aqui el mnsajito para decir que hay que rellenar
-					// los
-					// campos
+					AlertDialog msj = new AlertDialog.Builder(CategoryDetails.this).create();
+					msj.setTitle("Error");
+					msj.setMessage("Revise los datos introducidos");
+					msj.show();
 				}
 			}
 		});
@@ -152,6 +154,10 @@ public class CategoryDetails extends Activity {
 			if (exception != null) {
 				Toast.makeText(mContext, exception.getMessage(),
 						Toast.LENGTH_LONG).show();
+				AlertDialog msj = new AlertDialog.Builder(CategoryDetails.this).create();
+				msj.setTitle("Error");
+				msj.setMessage("No se pudo crear la categoria, revise los datos");
+				msj.show();
 			}
 
 			super.onPostExecute(valid);
@@ -221,6 +227,10 @@ public class CategoryDetails extends Activity {
 			if (exception != null) {
 				Toast.makeText(mContext, exception.getMessage(),
 						Toast.LENGTH_LONG).show();
+				AlertDialog msj = new AlertDialog.Builder(CategoryDetails.this).create();
+				msj.setTitle("Error");
+				msj.setMessage("No pudo modificarse la categoria, revise los datos introducidos");
+				msj.show();
 			}
 
 			super.onPostExecute(valid);

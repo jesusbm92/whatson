@@ -15,6 +15,7 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -113,6 +114,10 @@ public class ConfirmDeleteUser extends Activity {
 			if (exception != null) {
 				Toast.makeText(mContext, exception.getMessage(),
 						Toast.LENGTH_LONG).show();
+				AlertDialog msj = new AlertDialog.Builder(ConfirmDeleteUser.this).create();
+				msj.setTitle("Error");
+				msj.setMessage("No se pudo borrar el usuario, intente de nuevo");
+				msj.show();
 			}
 
 			super.onPostExecute(valid);

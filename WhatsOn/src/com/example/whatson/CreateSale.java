@@ -182,6 +182,10 @@ public class CreateSale extends Activity {
 			if (exception != null) {
 				Toast.makeText(mContext, exception.getMessage(),
 						Toast.LENGTH_LONG).show();
+				AlertDialog msj = new AlertDialog.Builder(CreateSale.this).create();
+				msj.setTitle("Error");
+				msj.setMessage("No se pudo cargar la lista de categorias, recargue la pagina");
+				msj.show();
 			}
 
 			super.onPostExecute(valid);
@@ -371,6 +375,11 @@ public class CreateSale extends Activity {
 			// Update the UI
 
 			if (exception != null) {
+				AlertDialog msj = new AlertDialog.Builder(CreateSale.this).create();
+				msj.setTitle("Error");
+				msj.setMessage("No se pudo crear la oferta, revise los datos");
+				msj.show();
+				
 				Toast.makeText(mContext, exception.getMessage(),
 						Toast.LENGTH_LONG).show();
 			}
@@ -380,8 +389,6 @@ public class CreateSale extends Activity {
 			msj.setTitle("Exito");
 			msj.setMessage("Oferta creada correctamente");
 			msj.show();
-			finish();
-
 		}
 
 	}

@@ -18,6 +18,7 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
@@ -145,6 +146,10 @@ public class Favourites extends ListActivity {
 			if (exception != null) {
 				Toast.makeText(mContext, exception.getMessage(),
 						Toast.LENGTH_LONG).show();
+				AlertDialog msj = new AlertDialog.Builder(Favourites.this).create();
+				msj.setTitle("Error");
+				msj.setMessage("No pudo cargarse la lista de favoritas, intente de nuevo");
+				msj.show();
 			}
 
 			super.onPostExecute(valid);

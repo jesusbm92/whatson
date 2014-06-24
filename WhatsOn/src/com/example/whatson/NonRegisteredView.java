@@ -18,6 +18,7 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -182,6 +183,10 @@ public class NonRegisteredView extends FragmentActivity implements
 			if (exception != null) {
 				Toast.makeText(mContext, exception.getMessage(),
 						Toast.LENGTH_LONG).show();
+				AlertDialog msj = new AlertDialog.Builder(NonRegisteredView.this).create();
+				msj.setTitle("Error");
+				msj.setMessage("No se pudieron cargar las ofertas, intente de nuevo");
+				msj.show();
 			}
 
 			super.onPostExecute(valid);

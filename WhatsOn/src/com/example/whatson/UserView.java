@@ -18,6 +18,7 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -207,6 +208,12 @@ public class UserView extends FragmentActivity implements OnMapClickListener {
 			if (exception != null) {
 				Toast.makeText(mContext, exception.getMessage(),
 						Toast.LENGTH_LONG).show();
+				Toast.makeText(mContext, exception.getMessage(),
+						Toast.LENGTH_LONG).show();
+				AlertDialog msj = new AlertDialog.Builder(UserView.this).create();
+				msj.setTitle("Error");
+				msj.setMessage("No se han podido cargar las ofertas, recague la aplicacion");
+				msj.show();
 			}
 
 			super.onPostExecute(valid);

@@ -18,6 +18,7 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
@@ -139,6 +140,10 @@ public class ListSales extends ListActivity {
 			if (exception != null) {
 				Toast.makeText(mContext, exception.getMessage(),
 						Toast.LENGTH_LONG).show();
+				AlertDialog msj = new AlertDialog.Builder(ListSales.this).create();
+				msj.setTitle("Error");
+				msj.setMessage("No se pudieron cargar las ofertas, intente de nuevo");
+				msj.show();
 			}
 
 			super.onPostExecute(valid);
